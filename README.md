@@ -64,48 +64,94 @@ Technical specifications based on the UI/UX planning
 
 ### Tech stack
 
-Front-end: TypeScript, React, Bootstrap
+**Front-end**: TypeScript, React, React Query, Bootstrap
 
-Back-end: TypeScript, Node.js, PostgreSQL
+**Back-end**: TypeScript, Node.js, Express, PostgreSQL
 
 Both front- and back-end will be run in a Docker environment.
 
 ### Data models
 
 **Snippet**
-| Attribute | Type | Required? |
-|---|---|:-:|
-| id | string | x
-| title | string | x
-| code | string | x
-| user | User | x
-| created_at | datetime | x
-| updated_at | datetime |
-| votes_up | User[]
-| votes_down | User[]
-| comments | Comment[]
 
-**User**
-| Attribute | Type | Required? |
-|---|---|:-:|
-| id | string | x
-| email | string | x
-| password | string | x
-| username | string | x
-| created_at | datetime | x
-| picture | buffer
-| bio | string
-| snippets | Snippet[]
+| Attribute | Type     | Required |
+| --------- | -------- | :------: |
+| id        | string   |    x     |
+| userId    | string   |    x     |
+| title     | string   |    x     |
+| content   | string   |    x     |
+| createdAt | datetime |    x     |
+| updatedAT | datetime |
 
 **Comment**
-| Attribute | Type | Required? |
-|---|---|:-:|
-| id | string | x
-| user | User | x
-| comment | string | x
-| created_at | datetime | x
-| updated_at | datetime
-| votes_up | User[]
-| votes_down | User[]
+
+| Attribute | Type     | Required |
+| --------- | -------- | :------: |
+| id        | string   |    x     |
+| snippetId | string   |    x     |
+| userId    | string   |    x     |
+| comment   | string   |    x     |
+| createdAt | datetime |    x     |
+| updatedAt | datetime |
+
+**Vote**
+
+| Attribute | Type    | Required |
+| --------- | ------- | :------: |
+| id        | string  |    x     |
+| postId    | string  |    x     |
+| userId    | string  |    x     |
+| positive  | boolean |    x     |
+
+**User**
+
+| Attribute | Type     | Required |
+| --------- | -------- | :------: |
+| id        | string   |    x     |
+| email     | string   |    x     |
+| password  | string   |    x     |
+| username  | string   |    x     |
+| createdAt | datetime |    x     |
+| picture   | buffer   |
+| bio       | string   |
 
 ### API
+
+WIP: Planning on theoretical level, might be modified as the project goes
+
+**Snippets**
+
+| Method     | URL                        |
+| ---------- | -------------------------- |
+| **GET**    | /api/snippets (params wip) |
+| **GET**    | /api/snippets/:snippet_id  |
+| **POST**   | /api/snippets              |
+| **PATCH**  | /api/snippets/:snippet_id  |
+| **DELETE** | /api/snippets/:snippet_id  |
+
+**Comments**
+
+| Method     | URL                                            |
+| ---------- | ---------------------------------------------- |
+| **GET**    | /api/snippets/:snippet_id/comments             |
+| **POST**   | /api/snippets/:snippet_id/comments             |
+| **PATCH**  | /api/snippets/:snippet_id/comments/:comment_id |
+| **DELETE** | /api/snippets/:snippet_id/comments/:comment_id |
+
+**Votes**
+
+| Method     | URL                 |
+| ---------- | ------------------- |
+| **GET**    | /api/votes/:post_id |
+| **POST**   | /api/votes/         |
+| **DELETE** | /api/votes/:vote_id |
+
+**Users**
+
+| Method     | URL                 |
+| ---------- | ------------------- |
+| **GET**    | /api/users/:user_id |
+| **POST**   | /api/users/login    |
+| **POST**   | /api/users/register |
+| **PATCH**  | /api/users/:user_id |
+| **DELETE** | /api/users/:user_id |
