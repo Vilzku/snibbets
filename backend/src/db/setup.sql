@@ -1,22 +1,32 @@
 
 /* DATABASE NAME SNIBBETS*/
 
+/*
+GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
+*/
+
 CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
-  username VARCHAR(255) NOT NULL,
+  username VARCHAR(50) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   picture VARCHAR(255),
   bio TEXT,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE (email),
+  UNIQUE (username)
 );
 
 CREATE TABLE IF NOT EXISTS snippets (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
   title VARCHAR(255) NOT NULL,
-  code TEXT NOT NULL,
+  content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP,
   PRIMARY KEY (id),
@@ -29,7 +39,7 @@ CREATE TABLE IF NOT EXISTS comments (
   id CHAR(36) NOT NULL,
   snippet_id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
-  comment TEXT NOT NULL,
+  content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP,
   PRIMARY KEY (id),

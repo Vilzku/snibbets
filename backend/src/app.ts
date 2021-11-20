@@ -2,14 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import { pool } from "./db";
+import UserRouter from "./routes/users";
 
 const app = express();
 
-app.get("/", async (req, res) => {
-  const test = await pool.query("SELECT * FROM test");
-  res.send(test.rows);
-});
+app.use(express.json());
+
+app.use("/api/users", UserRouter);
 
 app.listen(3000, () => {
   console.log("Server listening on port 3000");
