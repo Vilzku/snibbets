@@ -2,28 +2,30 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import { pool } from "../db";
-import { isEmailAvailable, isUsernameAvailable } from "../db/helpers";
-import { User } from "../misc/types";
+import { isEmailTaken, isUsernameTaken } from "../db/helpers";
+import { User } from "../types";
 import validatePassword from "../misc/passwordValidator";
+import validateToken from "../misc/validateToken";
 
 const router = express.Router();
 
 // TODO: what should this return
-router.get("/", async (req: Request, res: Response) => {
-  const userId = req.query.user_id;
+// router.get("/", async (req: Request, res: Response) => {
+//   const userId = req.query.user_id;
 
-  if (!userId) {
-    return res.status(400).send("failed");
-  }
+//   if (!userId) {
+//     return res.status(400).send("failed");
+//   }
 
-  const result = await pool.query("SELECT * FROM users WHERE id = $1", [
-    userId,
-  ]);
-  const user: User = result.rows[0];
-  res.send(user);
-});
+//   const result = await pool.query("SELECT * FROM users WHERE id = $1", [
+//     userId,
+//   ]);
+//   const user: User = result.rows[0];
+//   res.send(user);
+// });
 
 router.post(
   "/register",
@@ -45,10 +47,10 @@ router.post(
       const { email, username, password } = req.body;
 
       // Check if email and username are available
-      if (await isUsernameAvailable(username))
-        return res.status(403).send("Username already exists");
-      if (await isEmailAvailable(email))
+      if (await isEmailTaken(email))
         return res.status(403).send("Email already exists");
+      if (await isUsernameTaken(username))
+        return res.status(403).send("Username already exists");
 
       // Create user
       const hash = bcrypt.hash(password, 10);
@@ -61,10 +63,36 @@ router.post(
       // TODO: return only necessary data
 
       return res.send(user);
-    } catch {
-      return res.status(500).send("internal server error");
+    } catch (err) {
+      console.error(err);
+      return res.sendStatus(500);
     }
   }
 );
+
+router.post("/login", async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send("Invalid request");
+  }
+
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    const user: User = result.rows[0];
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).send("Invalid credentials");
+
+    if (!process.env.JWT_SECRET)
+      throw "Missing JWT_SECRET environment variable";
+    const token = jwt.sign({ email }, process.env.JWT_SECRET);
+    res.send(token);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
 
 export default router;
