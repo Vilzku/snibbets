@@ -1,17 +1,18 @@
 import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { body, validationResult } from "express-validator";
+import bcrypt from "bcrypt";
 
 import { pool } from "../db";
+import { isEmailAvailable, isUsernameAvailable } from "../db/helpers";
 import { User } from "../misc/types";
 import validatePassword from "../misc/passwordValidator";
 
 const router = express.Router();
 
+// TODO: what should this return
 router.get("/", async (req: Request, res: Response) => {
   const userId = req.query.user_id;
-
-  // TODO: validation
 
   if (!userId) {
     return res.status(400).send("failed");
@@ -26,32 +27,42 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post(
   "/register",
+
   body("email").isEmail().withMessage("Email is invalid").normalizeEmail(),
   body("username")
     .matches(/^[A-Za-z0-9]+$/)
     .withMessage("Username is invalid"),
   body("password").custom(validatePassword),
+
   async (req: Request, res: Response) => {
+    // Body validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, username, password } = req.body;
-
-    // TODO check if user, email already exists, status code
-
-    // TODO: create authentication
-
     try {
+      const { email, username, password } = req.body;
+
+      // Check if email and username are available
+      if (await isUsernameAvailable(username))
+        return res.status(403).send("Username already exists");
+      if (await isEmailAvailable(email))
+        return res.status(403).send("Email already exists");
+
+      // Create user
+      const hash = bcrypt.hash(password, 10);
       const result = await pool.query(
         "INSERT INTO users (id, email, password, username) VALUES ($1, $2, $3, $4) RETURNING *",
-        [uuidv4(), email, password, username]
+        [uuidv4(), email, hash, username]
       );
       const user: User = result.rows[0];
+
+      // TODO: return only necessary data
+
       return res.send(user);
-    } catch (err) {
-      return res.status(500).send({ message: err });
+    } catch {
+      return res.status(500).send("internal server error");
     }
   }
 );
