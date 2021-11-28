@@ -2,10 +2,40 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../db";
+import { sortList } from "../misc/helpers";
 import validateToken from "../misc/token";
-import { Snippet, User } from "../types";
+import { Snippet } from "../types";
 
 const router = express.Router();
+
+/**
+ * @api {get} /api/snippets Get multiple snippets
+ * @param {number} [page=1] Page number
+ * @param {number} [limit=10] Number of snippets per page
+ * @param {string} [sortBy=created_at] Sort by field
+ * @param {string} [order=desc] Sort order
+ */
+router.get("/", async (req: Request, res: Response) => {
+  const sortBy = (req.query.sortBy as string) || "created_at";
+  const order = (req.query.order as string) || "desc";
+  const amount = req.query.amount ? parseInt(req.query.amount as string) : 10;
+  const page = req.query.page ? parseInt(req.query.page as string) : 1;
+  const offset = (page - 1) * amount;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM snippets ORDER BY $1 FETCH NEXT $2 ROWS ONLY OFFSET $3",
+      [`${sortBy} ${order}`, amount, offset]
+    );
+    // TODO: Add user info, likes and comments to snippets
+
+    const snippets: Snippet[] = sortList(result.rows, sortBy, order);
+    return res.send(snippets);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
 
 /**
  * @api {post} /api/snippets/:id Get a snippet
@@ -19,8 +49,8 @@ router.get("/:id", async (req: Request, res: Response) => {
     ]);
     const snippet: Snippet = result.rows[0];
     if (!snippet) res.sendStatus(404);
-
-    res.json(snippet);
+    // TODO: Add user info, likes and comments to snippets
+    return res.send(snippet);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -45,7 +75,7 @@ router.post("/", validateToken, async (req: Request, res: Response) => {
     );
     const snippet: Snippet = result.rows[0];
 
-    res.json(snippet);
+    return res.send(snippet);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -72,10 +102,30 @@ router.put("/:id", validateToken, async (req: Request, res: Response) => {
     const snippet: Snippet = result.rows[0];
 
     if (!snippet) return res.sendStatus(404);
-    return res.json(snippet);
+    return res.send(snippet);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
   }
 });
+
+/**
+ * @api {delete} /api/snippets/:id Delete a snippet
+ */
+router.delete("/:id", validateToken, async (req: Request, res: Response) => {
+  const { userId } = req;
+  const { id } = req.params;
+
+  try {
+    await pool.query("DELETE FROM snippets WHERE id = $1 AND user_id = $2", [
+      id,
+      userId,
+    ]);
+    return res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
 export default router;

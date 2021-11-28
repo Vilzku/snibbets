@@ -28,7 +28,7 @@ router.post(
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).send({ errors: errors.array() });
     }
 
     try {
@@ -72,7 +72,7 @@ router.post("/login", async (req: Request, res: Response) => {
     if (!isMatch) return res.status(401).send("Invalid credentials");
 
     const token = createToken(user.id);
-    res.send(token);
+    return res.send(token);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -101,7 +101,7 @@ router.delete("/", validateToken, async (req: Request, res: Response) => {
       userId,
       hash,
     ]);
-    res.sendStatus(200);
+    return res.sendStatus(200);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS snippets (
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)
     REFERENCES users(id)
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS comments (
   user_id CHAR(36) NOT NULL,
   content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (snippet_id)
     REFERENCES snippets(id)
