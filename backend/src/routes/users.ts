@@ -2,31 +2,18 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
+import { User } from "../types";
 import { pool } from "../db";
 import { isEmailTaken, isUsernameTaken } from "../db/helpers";
-import { User } from "../types";
+import validateToken, { createToken } from "../misc/token";
 import validatePassword from "../misc/passwordValidator";
-import validateToken from "../misc/validateToken";
 
 const router = express.Router();
 
-// TODO: what should this return
-// router.get("/", async (req: Request, res: Response) => {
-//   const userId = req.query.user_id;
-
-//   if (!userId) {
-//     return res.status(400).send("failed");
-//   }
-
-//   const result = await pool.query("SELECT * FROM users WHERE id = $1", [
-//     userId,
-//   ]);
-//   const user: User = result.rows[0];
-//   res.send(user);
-// });
-
+/**
+ * @api {post} /api/users/register Register a new user
+ */
 router.post(
   "/register",
 
@@ -37,22 +24,19 @@ router.post(
   body("password").custom(validatePassword),
 
   async (req: Request, res: Response) => {
-    // Body validation
+    const { email, username, password } = req.body;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     try {
-      const { email, username, password } = req.body;
-
-      // Check if email and username are available
       if (await isEmailTaken(email))
         return res.status(403).send("Email already exists");
       if (await isUsernameTaken(username))
         return res.status(403).send("Username already exists");
 
-      // Create user
       const hash = bcrypt.hash(password, 10);
       const result = await pool.query(
         "INSERT INTO users (id, email, password, username) VALUES ($1, $2, $3, $4) RETURNING *",
@@ -60,9 +44,8 @@ router.post(
       );
       const user: User = result.rows[0];
 
-      // TODO: return only necessary data
-
-      return res.send(user);
+      const token = createToken(user.id);
+      res.send(token);
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
@@ -70,11 +53,13 @@ router.post(
   }
 );
 
+/**
+ * @api {post} /api/users/login Login user
+ */
 router.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
-    return res.status(400).send("Invalid request");
+    return res.sendStatus(400);
   }
 
   try {
@@ -82,13 +67,41 @@ router.post("/login", async (req: Request, res: Response) => {
       email,
     ]);
     const user: User = result.rows[0];
-    const isMatch = await bcrypt.compare(password, user.password);
+
+    const isMatch = await bcrypt.compare(password, user?.password || "");
     if (!isMatch) return res.status(401).send("Invalid credentials");
 
-    if (!process.env.JWT_SECRET)
-      throw "Missing JWT_SECRET environment variable";
-    const token = jwt.sign({ email }, process.env.JWT_SECRET);
+    const token = createToken(user.id);
     res.send(token);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
+/**
+ * @api {patch} /api/users/ Edit user profile
+ */
+router.patch("/", validateToken, async (req: Request, res: Response) => {
+  // TODO: impelement edit user
+  return res.status(404).send("Not implemented");
+});
+
+/**
+ * @api {delete} /api/users/ Delete user profile
+ */
+router.delete("/", validateToken, async (req: Request, res: Response) => {
+  const { userId } = req;
+  const { password } = req.body;
+  if (!password) return res.sendStatus(400);
+
+  try {
+    const hash = bcrypt.hash(password, 10);
+    await pool.query("DELETE FROM users WHERE id = $1 AND password = $2", [
+      userId,
+      hash,
+    ]);
+    res.sendStatus(200);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
