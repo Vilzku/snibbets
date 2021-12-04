@@ -97,11 +97,18 @@ router.delete("/", validateToken, async (req: Request, res: Response) => {
 
   try {
     const hash = bcrypt.hash(password, 10);
+
+    const result = await pool.query(
+      "SELECT * FROM users WHERE id = $1 AND password = $2",
+      [userId, hash]
+    );
+    if (result.rowCount === 0) return res.sendStatus(401);
+
     await pool.query("DELETE FROM users WHERE id = $1 AND password = $2", [
       userId,
       hash,
     ]);
-    return res.sendStatus(200);
+    return res.sendStatus(204);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
