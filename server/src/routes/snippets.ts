@@ -28,9 +28,8 @@ router.get("/", async (req: Request, res: Response) => {
       "SELECT * FROM snippets ORDER BY $1 FETCH NEXT $2 ROWS ONLY OFFSET $3",
       [`${sortBy} ${order}`, amount, offset]
     );
-    // TODO: Add user info, likes and comments to snippets
-
     const snippets: Snippet[] = sortList(result.rows, sortBy, order);
+
     return res.send(snippets);
   } catch (err) {
     console.error(err);
@@ -49,8 +48,8 @@ router.get("/:id", async (req: Request, res: Response) => {
       id,
     ]);
     const snippet: Snippet = result.rows[0];
+
     if (!snippet) res.sendStatus(404);
-    // TODO: Add user info, likes and comments to snippets
     return res.send(snippet);
   } catch (err) {
     console.error(err);
@@ -126,7 +125,7 @@ router.delete("/:id", validateToken, async (req: Request, res: Response) => {
       "SELECT * FROM snippets WHERE id = $1 AND user_id = $2",
       [id, userId]
     );
-    if (result.rowCount === 0) return res.sendStatus(404);
+    if (result.rowCount === 0) return res.sendStatus(401);
 
     await pool.query("DELETE FROM snippets WHERE id = $1 AND user_id = $2", [
       id,
