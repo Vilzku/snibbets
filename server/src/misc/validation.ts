@@ -7,12 +7,11 @@ export const createToken = (id: string) => {
 };
 
 const validateToken = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers.authorization;
+  const token: string = req.cookies.auth_token;
   try {
-    if (authHeader) {
+    if (token) {
       if (!process.env.JWT_SECRET)
         throw "Missing JWT_SECRET environment variable";
-      const token = authHeader.split(" ")[1];
       jwt.verify(token, process.env.JWT_SECRET, (err, result) => {
         if (err) res.sendStatus(401);
         req.userId = result?.id;

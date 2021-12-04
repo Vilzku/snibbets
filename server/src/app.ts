@@ -7,10 +7,12 @@ import UserRouter from "./routes/users";
 import SnippetRouter from "./routes/snippets";
 import CommentRouter from "./routes/comments";
 import VoteRouter from "./routes/votes";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
 
 app.use("/api/users", UserRouter);

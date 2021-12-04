@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import { User } from "../types";
 import { pool } from "../db";
 import { isEmailTaken, isUsernameTaken } from "../db/helpers";
-import validateToken, { createToken } from "../misc/token";
+import validateToken, { createToken } from "../misc/validation";
 import validatePassword from "../misc/passwordValidator";
 
 const router = express.Router();
@@ -71,8 +71,10 @@ router.post("/login", async (req: Request, res: Response) => {
     const isMatch = await bcrypt.compare(password, user?.password || "");
     if (!isMatch) return res.status(401).send("Invalid credentials");
 
-    const token = createToken(user.id);
-    return res.send(token);
+    res.cookie("auth_token", createToken(user.id), {
+      httpOnly: true,
+    });
+    return res.sendStatus(200);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../db";
 import { sortList } from "../misc/helpers";
-import validateToken from "../misc/token";
+import validateToken from "../misc/validation";
 import { Vote } from "../types";
 
 const router = express.Router();
