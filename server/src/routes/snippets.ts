@@ -11,7 +11,7 @@ const router = express.Router();
 /**
  * @api {get} /api/snippets Get multiple snippets
  * @param {number} [page=1] Page number
- * @param {number} [limit=10] Number of snippets per page
+ * @param {number} [amount=10] Number of snippets per page
  * @param {string} [sortBy=created_at] Sort by field
  * @param {string} [order=desc] Sort order
  */

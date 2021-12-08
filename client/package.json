@@ -38,5 +38,6 @@
       "react-app",
       "react-app/jest"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
