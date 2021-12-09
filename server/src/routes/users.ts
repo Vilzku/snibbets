@@ -8,6 +8,7 @@ import { pool } from "../db";
 import { isEmailTaken, isUsernameTaken } from "../db/helpers";
 import validateToken, { createToken } from "../misc/validation";
 import validatePassword from "../misc/passwordValidator";
+import { send } from "process";
 
 const router = express.Router();
 
@@ -74,7 +75,7 @@ router.post("/login", async (req: Request, res: Response) => {
     res.cookie("auth_token", createToken(user.id), {
       httpOnly: true,
     });
-    return res.sendStatus(200);
+    return res.status(200).send({ id: user.id, username: user.username });
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);

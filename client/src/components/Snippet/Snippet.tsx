@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Code, CodeBlock } from ".";
-import { Card } from "../../components";
+import { Card, Header } from "..";
 import { SnippetType } from "../../utils/types";
 
 interface Props {
@@ -25,7 +25,7 @@ const Snippet: React.FC<Props> = ({ id, preview }) => {
     <>
       {data && (
         <Card>
-          <h1>{data.title}</h1>
+          <Header>{data.title}</Header>
           <div>{"User info: " + data.user_id}</div>
           <CodeBlock>
             <Code preview={preview}>{data.content}</Code>

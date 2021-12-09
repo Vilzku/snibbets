@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Container, List, Snippet } from ".";
-import { Page } from "../../components";
+import { List } from ".";
+import { Page, PageContainer, Snippet } from "../../components";
 import { SnippetType } from "../../utils/types";
 
 interface Props {}
@@ -10,7 +10,7 @@ const Home: React.FC<Props> = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await fetch("/api/snippets?amount=2");
+      const res = await fetch("/api/snippets?amount=5");
       const data: SnippetType[] = await res.json();
       setData(data);
     };
@@ -19,19 +19,14 @@ const Home: React.FC<Props> = () => {
 
   return (
     <Page>
-      <Container>
+      <PageContainer>
         <List>
+          <Snippet preview id={"665756d3-bdbd-4296-9bf2-b33567893a6b"} />
           {data.map((item) => (
             <Snippet id={item.id} key={item.id} />
           ))}
-
-          <Snippet
-            preview
-            id={"665756d3-bdbd-4296-9bf2-b33567893a6b"}
-            key={"665756d3-bdbd-4296-9bf2-b33567893a6b"}
-          />
         </List>
-      </Container>
+      </PageContainer>
     </Page>
   );
 };

@@ -1,12 +1,21 @@
 import React from "react";
+import { Page } from "../../components";
+import { UserData } from "../../utils/types";
+import Home from "../Home";
 import LoginCard from "./LoginCard";
 
-const Frontpage = () => {
+interface Props {
+  handleLogin: (userData: UserData) => void;
+}
+
+const Frontpage: React.FC<Props> = ({ handleLogin }) => {
+  if (localStorage.getItem("user_id")) return <Home />;
+
   return (
-    <div>
+    <Page>
       Frontpage
-      <LoginCard />
-    </div>
+      <LoginCard handleLogin={handleLogin} />
+    </Page>
   );
 };
 

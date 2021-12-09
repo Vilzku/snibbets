@@ -5,15 +5,19 @@ const Button = styled.button`
   height: 2.5rem;
   margin: 0.5rem 0;
   padding: 0.5rem 0.75rem;
-  background: ${(props) => props.theme.colors.primary};
-  color: ${(props) => props.theme.colors.white};
+  background: ${({ theme, disabled }) =>
+    disabled ? theme.colors.grey : theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
   border: none;
   border-radius: 20rem;
 
+  ${({ theme, disabled }) =>
+    !disabled &&
+    `
   &:hover {
-    background: ${(props) => darken(0.1, props.theme.colors.primary)};
+    background: ${() => darken(0.1, theme.colors.primary)};
     cursor: pointer;
-  }
+  }`}
 `;
 
 export default Button;

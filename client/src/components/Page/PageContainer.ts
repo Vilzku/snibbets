@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+const PageContainer = styled.div`
   max-width: 1200px;
   width: 80%;
   margin: 0 auto;
 `;
 
-export default Container;
+export default PageContainer;
