@@ -15,7 +15,7 @@ const Button = styled.button`
     !disabled &&
     `
   &:hover {
-    background: ${() => darken(0.1, theme.colors.primary)};
+    background: ${darken(0.08, theme.colors.primary)};
     cursor: pointer;
   }`}
 `;

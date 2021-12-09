@@ -1,21 +1,19 @@
 import React from "react";
-import { Page } from "../../components";
+import { PageContainer } from "../../components";
 import { UserData } from "../../utils/types";
 import Home from "../Home";
 import LoginCard from "./LoginCard";
 
 interface Props {
-  handleLogin: (userData: UserData) => void;
+  handleLogin: (email: string, password: string) => void;
 }
 
 const Frontpage: React.FC<Props> = ({ handleLogin }) => {
-  if (localStorage.getItem("user_id")) return <Home />;
-
   return (
-    <Page>
+    <PageContainer>
       Frontpage
       <LoginCard handleLogin={handleLogin} />
-    </Page>
+    </PageContainer>
   );
 };
 

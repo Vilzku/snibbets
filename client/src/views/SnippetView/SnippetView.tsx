@@ -7,11 +7,9 @@ const SnippetView = () => {
   const id = params.id;
 
   return (
-    <Page>
-      <PageContainer>
-        <Snippet id={id} />
-      </PageContainer>
-    </Page>
+    <PageContainer>
+      <Snippet id={id} />
+    </PageContainer>
   );
 };
 

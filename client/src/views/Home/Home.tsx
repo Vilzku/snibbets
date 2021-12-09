@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { List } from ".";
-import { Page, PageContainer, Snippet } from "../../components";
+import { PageContainer, Snippet } from "../../components";
 import { SnippetType } from "../../utils/types";
 
 interface Props {}
@@ -18,16 +18,14 @@ const Home: React.FC<Props> = () => {
   }, []);
 
   return (
-    <Page>
-      <PageContainer>
-        <List>
-          <Snippet preview id={"665756d3-bdbd-4296-9bf2-b33567893a6b"} />
-          {data.map((item) => (
-            <Snippet id={item.id} key={item.id} />
-          ))}
-        </List>
-      </PageContainer>
-    </Page>
+    <PageContainer>
+      <List>
+        <Snippet preview id={"665756d3-bdbd-4296-9bf2-b33567893a6b"} />
+        {data.map((item) => (
+          <Snippet id={item.id} key={item.id} />
+        ))}
+      </List>
+    </PageContainer>
   );
 };
 

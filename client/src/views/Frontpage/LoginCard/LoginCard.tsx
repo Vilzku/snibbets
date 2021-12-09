@@ -1,12 +1,13 @@
-import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from ".";
 import { Button, Card, Header, TextInput } from "../../../components";
+import { login } from "../../../utils/api";
+import { useNavigate } from "react-router-dom";
 import { UserData } from "../../../utils/types";
 
 interface Props {
-  handleLogin: (userData: UserData) => void;
+  handleLogin: (email: string, password: string) => void;
 }
 
 const LoginCard: React.FC<Props> = ({ handleLogin }) => {
@@ -14,22 +15,13 @@ const LoginCard: React.FC<Props> = ({ handleLogin }) => {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState<string>();
 
-  const login = async () => {
-    // TODO: check empty fields
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
     try {
-      const res = await axios.post("/api/users/login", {
-        email,
-        password,
-      });
-      if (res.status === 200) handleLogin(res.data);
-    } catch (err: any) {
-      if (err.response.status === 401) {
-        setError("Invalid credentials");
-      } else if (err.response.status === 500) {
-        setError("Server error, try again later");
-      } else {
-        setError("Something went wrong, reload the page and try again");
-      }
+      handleLogin(email, password);
+    } catch (error: any) {
+      setError(error.message);
     }
   };
 
@@ -49,7 +41,7 @@ const LoginCard: React.FC<Props> = ({ handleLogin }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button onClick={login}>Login</Button>
+        <Button onClick={handleClick}>Login</Button>
         <Link to="/">Register</Link>
         {error && <p>{error}</p>}
       </Container>

@@ -1,7 +1,10 @@
 import NavBar from "./NavBar";
-import Container from "./Container";
+import Bar from "./Bar";
 import Logo from "./Logo";
+import Container from "./Container";
+import Column from "./Column";
+import ProfileMenu from "./ProfileMenu";
 
 export default NavBar;
 
-export { Container, Logo };
+export { Bar, Logo, Container, Column, ProfileMenu };
