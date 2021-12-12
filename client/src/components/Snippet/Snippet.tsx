@@ -3,13 +3,15 @@ import { Code, CodeBlock, TopInfo } from ".";
 import { Card } from "..";
 import { getSnippet } from "../../utils/api/snippets";
 import { SnippetType } from "../../utils/types";
+import BottomBar from "./BottomBar";
 
 interface Props {
   id: string;
+  userId: string | undefined;
   preview?: boolean;
 }
 
-const Snippet: React.FC<Props> = ({ id, preview }) => {
+const Snippet: React.FC<Props> = ({ id, preview, userId }) => {
   const [snippet, setSnippet] = React.useState<SnippetType | undefined>();
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const Snippet: React.FC<Props> = ({ id, preview }) => {
   return (
     <>
       {snippet && (
-        <Card gap="0.5rem">
+        <Card>
           <TopInfo
             title="asdasd"
             createdAt={snippet.createdAt}
@@ -33,11 +35,7 @@ const Snippet: React.FC<Props> = ({ id, preview }) => {
             <Code preview={preview}>{snippet.content}</Code>
             {preview && "Show more..." /* TODO: Indicate there is more code*/}
           </CodeBlock>
-          <div>
-            <button>button</button>
-            <button>button</button>
-            <button>button</button>
-          </div>
+          <BottomBar snippetId={snippet.id} userId={userId} />
         </Card>
       )}
     </>

@@ -34,11 +34,17 @@ const App: React.FC = () => {
       <Routes>
         <Route
           path="/"
-          element={user ? <Home /> : <Frontpage handleLogin={handleLogin} />}
+          element={
+            user ? (
+              <Home userId={user.id} />
+            ) : (
+              <Frontpage handleLogin={handleLogin} />
+            )
+          }
         />
         <Route path="/signup" element={<Register />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/:id" element={<SnippetView />} />
+        <Route path="/home" element={<Home userId={user?.id} />} />
+        <Route path="/:id" element={<SnippetView userId={user?.id} />} />
       </Routes>
     </Page>
   );

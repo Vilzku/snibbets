@@ -27,8 +27,6 @@ interface CommentType {
 interface VoteType {
   id: string;
   userId: string;
-  snippetId?: string;
-  commentId?: string;
   positive: boolean;
 }
 

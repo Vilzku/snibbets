@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../db";
-import { sortList } from "../misc/helpers";
+import { createVoteObject, sortList } from "../misc/helpers";
 import validateToken from "../misc/validation";
 import { Vote } from "../types";
 
@@ -21,7 +21,7 @@ router.get("/:postId", async (req: Request, res: Response) => {
     );
     const votes: Vote[] = sortList(result.rows, "created_at", "desc");
 
-    return res.send(votes);
+    return res.send(votes.map((vote) => createVoteObject(vote)));
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -42,13 +42,22 @@ router.post("/", validateToken, async (req: Request, res: Response) => {
     return res.sendStatus(400);
 
   try {
+    // Check if vote already exists
+    const searchResult = await pool.query(
+      `SELECT * FROM votes WHERE user_id = $1 AND (snippet_id = $2 OR comment_id = $2)`,
+      [userId, snippetId || commentId]
+    );
+    if (searchResult.rows.length > 0) {
+      return res.status(400).send("This user has already voted on this post");
+    }
+
     const result = await pool.query(
       "INSERT INTO votes (id, snippet_id, comment_id, user_id, positive) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [uuidv4(), snippetId, commentId, userId, positive ? true : false]
     );
     const vote: Vote = result.rows[0];
 
-    return res.send(vote);
+    return res.send(createVoteObject(vote));
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -71,7 +80,7 @@ router.patch("/:id", validateToken, async (req: Request, res: Response) => {
     );
     const vote: Vote = result.rows[0];
 
-    return res.send(vote);
+    return res.send(createVoteObject(vote));
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
