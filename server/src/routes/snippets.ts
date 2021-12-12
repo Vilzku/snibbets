@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../db";
-import { sortList } from "../misc/helpers";
+import { createSnippetObject, sortList } from "../misc/helpers";
 import validateToken from "../misc/validation";
 import { Snippet } from "../types";
 
@@ -30,7 +30,7 @@ router.get("/", async (req: Request, res: Response) => {
     );
     const snippets: Snippet[] = sortList(result.rows, sortBy, order);
 
-    return res.send(snippets);
+    return res.send(snippets.map((snippet) => createSnippetObject(snippet)));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -50,7 +50,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     const snippet: Snippet = result.rows[0];
 
     if (!snippet) res.sendStatus(404);
-    return res.send(snippet);
+    return res.send(createSnippetObject(snippet));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -77,7 +77,7 @@ router.post("/", validateToken, async (req: Request, res: Response) => {
     );
     const snippet: Snippet = result.rows[0];
 
-    return res.send(snippet);
+    return res.send(createSnippetObject(snippet));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -106,7 +106,7 @@ router.put("/:id", validateToken, async (req: Request, res: Response) => {
     const snippet: Snippet = result.rows[0];
 
     if (!snippet) return res.sendStatus(404);
-    return res.send(snippet);
+    return res.send(createSnippetObject(snippet));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);

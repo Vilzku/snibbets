@@ -1,6 +1,9 @@
 interface UserData {
   id: string;
   username: string;
+  email: string;
+  bio: string;
+  createdAt: string;
 }
 
 interface SnippetType {
@@ -8,8 +11,8 @@ interface SnippetType {
   userId: string;
   title: string;
   content: string;
-  createdAt: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 interface CommentType {
@@ -17,8 +20,8 @@ interface CommentType {
   snippetId: string;
   userId: string;
   content: string;
-  createdAt: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt?: string;
 }
 
 interface VoteType {

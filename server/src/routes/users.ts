@@ -11,6 +11,7 @@ import {
   checkUsernameAvailability,
   validatePassword,
 } from "../misc/registerValidator";
+import { createUserObject } from "../misc/helpers";
 
 const router = express.Router();
 
@@ -78,6 +79,29 @@ router.post("/login", async (req: Request, res: Response) => {
       httpOnly: true,
     });
     return res.status(200).send({ id: user.id, username: user.username });
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
+/**
+ * @api {get} /api/users/:id Fetch user info
+ */
+router.get("/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.sendStatus(400);
+  }
+
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    const user: User = result.rows[0];
+    if (!user) {
+      return res.sendStatus(404);
+    }
+
+    return res.send(createUserObject(user));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);

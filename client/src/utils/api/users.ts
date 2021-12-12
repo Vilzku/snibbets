@@ -1,8 +1,8 @@
 import axios from "axios";
-import { removeUserFromStorage, saveUserToStorage } from "./storageHelper";
-import { UserData } from "./types";
+import { removeUserFromStorage, saveUserToStorage } from "../storageHelper";
+import { UserData } from "../types";
 
-const login = async (
+export const login = async (
   email: string,
   password: string
 ): Promise<UserData | void> => {
@@ -15,6 +15,7 @@ const login = async (
       saveUserToStorage(res.data, 24 * 60 * 60 * 1000);
       return res.data;
     }
+    throw new Error();
   } catch (err: any) {
     if (err.response.status === 401) {
       logout();
@@ -27,11 +28,11 @@ const login = async (
   }
 };
 
-const logout = () => {
+export const logout = () => {
   removeUserFromStorage();
 };
 
-const register = async (
+export const register = async (
   email: string,
   password: string,
   username: string
@@ -46,6 +47,7 @@ const register = async (
       saveUserToStorage(res.data, 24 * 60 * 60 * 1000);
       return res.data;
     }
+    throw new Error();
   } catch (err: any) {
     if (err.response.status === 400) {
       throw err.response.data;
@@ -57,12 +59,25 @@ const register = async (
   }
 };
 
-interface RegisterError {
+export interface RegisterError {
   value: string;
   msg: string | string[];
   param: "email" | "password" | "username";
   location?: string;
 }
 
-export { login, logout, register };
-export type { RegisterError };
+export const getUserInfo = async (id: string): Promise<UserData | void> => {
+  try {
+    const res = await axios.get(`/api/users/${id}`);
+    if (res.status === 200) {
+      return res.data;
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response.status === 500) {
+      throw new Error("Server error, try again later");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};

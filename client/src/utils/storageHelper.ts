@@ -1,6 +1,9 @@
 import { UserData } from "./types";
 
-export const getUserFromStorage = (): UserData | null => {
+export const getUserFromStorage = (): {
+  username: string;
+  id: string;
+} | null => {
   if (isLoginExpired()) return null;
   const username = localStorage.getItem("username");
   const id = localStorage.getItem("user_id");
@@ -10,7 +13,13 @@ export const getUserFromStorage = (): UserData | null => {
   return null;
 };
 
-export const saveUserToStorage = (data: UserData, expirationTime: number) => {
+export const saveUserToStorage = (
+  data: {
+    username: string;
+    id: string;
+  },
+  expirationTime: number
+) => {
   localStorage.setItem("username", data.username);
   localStorage.setItem("user_id", data.id);
   localStorage.setItem(

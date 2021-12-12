@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   username VARCHAR(50) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  picture VARCHAR(255),
   bio TEXT,
   PRIMARY KEY (id),
   UNIQUE (email),

@@ -6,6 +6,7 @@ import { Page, PageContainer } from "./Page";
 import Snippet from "./Snippet";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
+import SubHeader from "./SubHeader";
 
 export {
   Card,
@@ -17,4 +18,5 @@ export {
   PageContainer,
   Avatar,
   Icon,
+  SubHeader,
 };

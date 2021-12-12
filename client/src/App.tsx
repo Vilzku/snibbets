@@ -1,9 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Page } from "./components";
-import { login } from "./utils/api";
+import { login } from "./utils/api/users";
 import { getUserFromStorage } from "./utils/storageHelper";
-import { UserData } from "./utils/types";
 import Frontpage from "./views/Frontpage";
 import Home from "./views/Home";
 import NavBar from "./views/NavBar";
@@ -11,7 +10,10 @@ import Register from "./views/Register";
 import SnippetView from "./views/SnippetView";
 
 const App: React.FC = () => {
-  const [user, setUser] = React.useState<UserData | null>(getUserFromStorage());
+  const [user, setUser] = React.useState<{
+    username: string;
+    id: string;
+  } | null>(getUserFromStorage());
 
   const handleLogin = async (email: string, password: string) => {
     try {

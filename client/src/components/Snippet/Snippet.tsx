@@ -1,40 +1,43 @@
 import React, { useEffect } from "react";
-import { Code, CodeBlock } from ".";
-import { Card, Header } from "..";
+import { Code, CodeBlock, TopInfo } from ".";
+import { Card } from "..";
+import { getSnippet } from "../../utils/api/snippets";
 import { SnippetType } from "../../utils/types";
 
 interface Props {
-  id?: string;
+  id: string;
   preview?: boolean;
 }
 
-//TODO: backend returns wrong type of snippet
 const Snippet: React.FC<Props> = ({ id, preview }) => {
-  const [data, setData] = React.useState<any>(null);
+  const [snippet, setSnippet] = React.useState<SnippetType | undefined>();
 
   useEffect(() => {
     const getData = async () => {
-      const res = await fetch("/api/snippets/" + id);
-      const data = await res.json();
-      setData(data);
+      const data = await getSnippet(id);
+      if (data) setSnippet(data);
     };
     getData();
   }, [id]);
 
   return (
     <>
-      {data && (
-        <Card>
-          <Header>{data.title}</Header>
-          <div>{"User info: " + data.user_id}</div>
+      {snippet && (
+        <Card gap="0.5rem">
+          <TopInfo
+            title="asdasd"
+            createdAt={snippet.createdAt}
+            userId={snippet.userId}
+          />
           <CodeBlock>
-            <Code preview={preview}>{data.content}</Code>
+            <Code preview={preview}>{snippet.content}</Code>
             {preview && "Show more..." /* TODO: Indicate there is more code*/}
           </CodeBlock>
-          <div>{data.createdAt}</div>
-          <button>button</button>
-          <button>button</button>
-          <button>button</button>
+          <div>
+            <button>button</button>
+            <button>button</button>
+            <button>button</button>
+          </div>
         </Card>
       )}
     </>

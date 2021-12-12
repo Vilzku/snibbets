@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { BottomInfo, Container } from ".";
 import { Button, Card, TextInput } from "../../../components";
-import { register, RegisterError } from "../../../utils/api";
+import { register, RegisterError } from "../../../utils/api/users";
 
 interface Props {}
 

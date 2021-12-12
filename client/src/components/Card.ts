@@ -3,12 +3,14 @@ import styled from "styled-components";
 interface Props {
   width?: string;
   height?: string;
+  gap?: string;
 }
 
 const Card = styled.div<Props>`
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: ${({ gap }) => gap || ""};
   padding: 1.5rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.border.radius};

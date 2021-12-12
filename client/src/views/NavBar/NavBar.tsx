@@ -7,7 +7,7 @@ import { Avatar } from "../../components";
 import { UserData } from "../../utils/types";
 
 interface Props {
-  user: UserData | null;
+  user: { username: string; id: string } | null;
 }
 
 const NavBar: React.FC<Props> = ({ user }) => {

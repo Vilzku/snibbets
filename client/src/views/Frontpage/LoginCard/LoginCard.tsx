@@ -2,9 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from ".";
 import { Button, Card, Header, TextInput } from "../../../components";
-import { login } from "../../../utils/api";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "../../../utils/types";
 
 interface Props {
   handleLogin: (email: string, password: string) => void;

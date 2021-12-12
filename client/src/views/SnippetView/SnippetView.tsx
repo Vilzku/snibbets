@@ -1,16 +1,12 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { Page, PageContainer, Snippet } from "../../components";
+import { PageContainer, Snippet } from "../../components";
 
-const SnippetView = () => {
+const SnippetView: React.FC = () => {
   const params = useParams();
   const id = params.id;
 
-  return (
-    <PageContainer>
-      <Snippet id={id} />
-    </PageContainer>
-  );
+  return <PageContainer>{id && <Snippet id={id} />}</PageContainer>;
 };
 
 export default SnippetView;
