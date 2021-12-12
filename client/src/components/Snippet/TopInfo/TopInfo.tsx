@@ -10,9 +10,15 @@ interface Props {
   title: string;
   createdAt: string;
   userId: string;
+  titleClickable?: boolean;
 }
 
-const TopInfo: React.FC<Props> = ({ title, createdAt, userId }) => {
+const TopInfo: React.FC<Props> = ({
+  title,
+  createdAt,
+  userId,
+  titleClickable,
+}) => {
   const [user, setUser] = React.useState<UserData>({} as UserData);
 
   useEffect(() => {
@@ -27,11 +33,10 @@ const TopInfo: React.FC<Props> = ({ title, createdAt, userId }) => {
     <Container>
       <Avatar src={avatar} size="3rem" />
       <div>
-        <Header>{title}</Header>
+        <Header clickable={titleClickable}>{title}</Header>
         <SubHeader>
-          {user.username +
-            " - " +
-            getCreatedAtString("2021-12-02 03:00:00.246949")}
+          {/* TODO: Link to profile */}
+          {user.username + " - " + getCreatedAtString(createdAt)}
         </SubHeader>
       </div>
     </Container>

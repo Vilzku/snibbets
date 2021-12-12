@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Bar, Column, Container, Logo, ProfileMenu } from ".";
-import logo from "../../assets/images/logo-placeholder.png";
+import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar-placeholder.png";
 import { Avatar } from "../../components";
-import { UserData } from "../../utils/types";
 
 interface Props {
   user: { username: string; id: string } | null;

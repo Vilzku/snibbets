@@ -1,9 +1,11 @@
+import { darken, rgba } from "polished";
 import styled from "styled-components";
 
 interface Props {
   width?: string;
   height?: string;
   gap?: string;
+  clickable?: boolean;
 }
 
 const Card = styled.div<Props>`
@@ -18,6 +20,14 @@ const Card = styled.div<Props>`
   height: ${({ height }) => height};
   width: ${({ width }) => width};
   box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
+
+  ${({ clickable }) =>
+    clickable &&
+    `
+  &:hover {
+    cursor: pointer;
+    border: ${"1px solid " + darken(0.08, "#e2e4e7")};
+  }`}
 `;
 
 export default Card;

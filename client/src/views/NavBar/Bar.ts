@@ -7,8 +7,8 @@ const Bar = styled.div`
   left: 0;
   top: 0;
   z-index: 10;
-  background-color: ${({ theme }) => theme.colors.darkGrey};
-  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.lightGrey};
+  color: ${({ theme }) => theme.colors.black};
   font-family: "Lato", sans-serif;
 `;
 

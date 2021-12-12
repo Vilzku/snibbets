@@ -80,14 +80,20 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
   return (
     <Container>
       <Button
-        onClick={() => handleVote("positive")}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleVote("positive");
+        }}
         active={userVote && userVote.positive}
       >
         <Icon icon={faThumbsUp} />
         {positiveVotes + " Likes"}
       </Button>
       <Button
-        onClick={() => handleVote("negative")}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleVote("negative");
+        }}
         active={userVote && !userVote.positive}
       >
         <Icon icon={faThumbsDown} />
@@ -97,7 +103,12 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
         <Icon icon={faCommentAlt} />
         {" Comment"}
       </Button>
-      <Button>
+      <Button
+        onClick={(e) => {
+          e.stopPropagation();
+          //TODO: Share
+        }}
+      >
         <Icon icon={faShareAlt} />
         {" Share"}
       </Button>

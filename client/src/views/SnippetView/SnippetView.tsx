@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import { Container } from ".";
 import { PageContainer, Snippet } from "../../components";
 
 interface Props {
@@ -11,7 +12,9 @@ const SnippetView: React.FC<Props> = ({ userId }) => {
   const id = params.id;
 
   return (
-    <PageContainer>{id && <Snippet id={id} userId={userId} />}</PageContainer>
+    <PageContainer>
+      <Container>{id && <Snippet id={id} userId={userId} />}</Container>
+    </PageContainer>
   );
 };
 

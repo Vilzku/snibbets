@@ -39,7 +39,7 @@ const Home: React.FC<Props> = ({ userId }) => {
         />
         {data &&
           data.map((item) => (
-            <Snippet id={item.id} key={item.id} userId={userId} />
+            <Snippet preview id={item.id} key={item.id} userId={userId} />
           ))}
       </List>
     </PageContainer>
