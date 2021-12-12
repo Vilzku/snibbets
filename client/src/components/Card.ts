@@ -7,7 +7,9 @@ interface Props {
 
 const Card = styled.div<Props>`
   position: relative;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.border.radius};
   border: 1px solid #e2e4e7;

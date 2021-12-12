@@ -1,4 +1,5 @@
 import passwordValidator from "password-validator";
+import { isEmailTaken, isUsernameTaken } from "../db/helpers";
 
 const schema = new passwordValidator();
 
@@ -11,7 +12,7 @@ schema
   .has().digits(1, "Password should contain atleast one number")
   .has().not().spaces(1, "Password should not contain spaces");
 
-const validatePassword = (password: string) => {
+export const validatePassword = (password: string) => {
   const result = schema.validate(password, {
     details: true,
   });
@@ -21,8 +22,17 @@ const validatePassword = (password: string) => {
       return err.message;
     });
   }
-
   return true;
 };
 
-export default validatePassword;
+export const checkUsernameAvailability = async (username: string) => {
+  const result = await isUsernameTaken(username);
+  if (result) return Promise.reject("Username is already taken");
+  return true;
+};
+
+export const checkEmailAvailability = async (email: string) => {
+  const result = await isEmailTaken(email);
+  if (result) return Promise.reject("Email is already taken");
+  return true;
+};

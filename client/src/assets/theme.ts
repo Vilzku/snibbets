@@ -12,6 +12,8 @@ const theme = {
     grey: "#787878",
     darkGrey: "#252525",
     black: "#0D0D0D",
+
+    red: "#FF0000",
   },
   border: {
     radius: "0.5rem",

@@ -42,7 +42,7 @@ const LoginCard: React.FC<Props> = ({ handleLogin }) => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button onClick={handleClick}>Login</Button>
-        <Link to="/">Register</Link>
+        <Link to="/signup">Sign up</Link>
         {error && <p>{error}</p>}
       </Container>
     </Card>

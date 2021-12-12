@@ -2,14 +2,18 @@
   "name": "snibbets",
   "version": "1.0.0",
   "scripts": {
-    "start": "echo \"Error: no script specified\" && exit 1",
-    "start-frontend": "echo \"Error: no script specified\" && exit 1",
-    "start-backend": "echo \"Error: no script specified\" && exit 1"
+    "start": "yarn && concurrently \"cd client && yarn && yarn start\" \"cd server && yarn build && yarn && yarn start\"",
+    "dev": "yarn && concurrently \"cd client && yarn && yarn start\" \"cd server && yarn && yarn dev\"",
+    "build:client": "cd client && yarn build",
+    "build:server": "cd server && yarn build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vilzku/snibbets.git"
   },
   "author": "Ville Puolitaival",
-  "homepage": "https://github.com/Vilzku/snibbets#readme"
+  "homepage": "https://github.com/Vilzku/snibbets#readme",
+  "devDependencies": {
+    "concurrently": "^6.4.0"
+  }
 }
