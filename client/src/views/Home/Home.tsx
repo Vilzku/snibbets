@@ -23,7 +23,7 @@ const Home: React.FC<Props> = ({ userId }) => {
         if (data) setData(data);
       } catch (error) {
         console.log(error);
-        // TODO: Error handling, maybe loading indicator
+        // TODO: !!! Error handling, maybe loading indicator
       }
     };
     getData();

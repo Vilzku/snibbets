@@ -11,7 +11,7 @@ export const getVotes = async (
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");
@@ -35,7 +35,7 @@ export const postVote = async (
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");
@@ -53,7 +53,7 @@ export const updateVote = async (id: string, positive: boolean) => {
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");
@@ -66,7 +66,7 @@ export const deleteVote = async (id: string) => {
     await axios.delete(`/api/votes/${id}`);
     return true;
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");

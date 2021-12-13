@@ -20,7 +20,7 @@ export const getAllSnippets = async (
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error(
         "Something went wrong on the server side, try again later"
       );
@@ -38,11 +38,11 @@ export const getSnippet = async (id: string): Promise<SnippetType | void> => {
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
       throw new Error(
         "Something went wrong on the server side, try again later"
       );
-    } else if (err.response.status === 404) {
+    } else if (err.response && err.response.status === 404) {
       throw new Error("Snippet not found");
     }
   }

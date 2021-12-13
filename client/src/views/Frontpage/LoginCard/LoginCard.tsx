@@ -24,19 +24,21 @@ const LoginCard: React.FC<Props> = ({ handleLogin }) => {
     <Card width="25rem">
       <Container>
         <Header>Login</Header>
-        <TextInput
-          placeholder="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextInput
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button onClick={handleClick}>Login</Button>
+        <form>
+          <TextInput
+            placeholder="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextInput
+            placeholder="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button onClick={handleClick}>Login</Button>
+        </form>
         <Link to="/signup">Sign up</Link>
         {error && <p>{error}</p>}
       </Container>

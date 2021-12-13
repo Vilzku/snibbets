@@ -17,10 +17,10 @@ export const login = async (
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 401) {
+    if (err.response && err.response.status === 401) {
       logout();
       throw Error("Invalid credentials");
-    } else if (err.response.status === 500) {
+    } else if (err.response && err.response.status === 500) {
       throw Error("Server error, try again later");
     } else {
       throw Error("Something went wrong, reload the page and try again");
@@ -49,9 +49,9 @@ export const register = async (
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 400) {
+    if (err.response && err.response.status === 400) {
       throw err.response.data;
-    } else if (err.response.status === 500) {
+    } else if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");
@@ -74,7 +74,41 @@ export const getUserInfo = async (id: string): Promise<UserData | void> => {
     }
     throw new Error();
   } catch (err: any) {
-    if (err.response.status === 500) {
+    if (err.response && err.response.status === 500) {
+      throw new Error("Server error, try again later");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};
+
+export const uploadImage = async (image: File) => {
+  try {
+    const formData = new FormData();
+    formData.append("image", image);
+    const res = await axios.post("/api/users/image", formData);
+    if (res.status === 200) {
+      return true;
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response && err.response.status === 500) {
+      throw new Error("Server error, try again later");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};
+
+export const getImage = async (id: string) => {
+  try {
+    const res = await axios.get(`/api/users/image/${id}`);
+    if (res.status === 200) {
+      return res.data;
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response && err.response.status === 500) {
       throw new Error("Server error, try again later");
     } else {
       throw new Error("Something went wrong, reload the page and try again");

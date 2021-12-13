@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { body, validationResult } from "express-validator";
 import bcrypt from "bcrypt";
+import fs from "fs";
 
 import { User } from "../types";
 import { pool } from "../db";
@@ -12,6 +13,7 @@ import {
   validatePassword,
 } from "../misc/registerValidator";
 import { createUserObject } from "../misc/helpers";
+import upload from "../misc/multerConfig";
 
 const router = express.Router();
 
@@ -44,10 +46,12 @@ router.post(
       const hash = bcrypt.hash(password, 10);
       const result = await pool.query(
         "INSERT INTO users (id, email, password, username) VALUES ($1, $2, $3, $4) RETURNING *",
-        [uuidv4(), email, hash, username]
+        [uuidv4(), email, hash, username.toLowerCase()]
       );
       const user: User = result.rows[0];
-      createToken(user.id);
+      res.cookie("auth_token", createToken(user.id), {
+        httpOnly: true,
+      });
 
       res.send({ id: user.id, username: user.username });
     } catch (err) {
@@ -144,4 +148,41 @@ router.delete("/", validateToken, async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @api {post} /api/users/image Upload a profile picture
+ */
+router.post(
+  "/image",
+  validateToken,
+  upload.single("image"),
+  async (req: Request, res: Response) => {
+    const { userId } = req;
+    const path = `./data/images/${userId}`;
+    try {
+      fs.access(path, fs.constants.F_OK, async (err) => {
+        if (err) {
+          console.error(err);
+          return res.sendStatus(400);
+        }
+        return res.sendStatus(200);
+      });
+    } catch (err) {
+      console.error(err);
+      return res.sendStatus(500);
+    }
+  }
+);
+
+router.get("/image/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const path = `./data/images/${id}`;
+  try {
+    return res.sendFile(path, {
+      root: __dirname + "/../../",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
 export default router;

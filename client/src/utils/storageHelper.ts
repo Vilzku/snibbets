@@ -41,7 +41,7 @@ export const isLoginExpired = () => {
     return true;
   }
 
-  if (new Date() > new Date(expiration)) {
+  if (new Date() > new Date(parseInt(expiration))) {
     removeUserFromStorage();
     return true;
   }

@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Bar, Column, Container, Logo, ProfileMenu } from ".";
 import logo from "../../assets/images/logo.png";
-import avatar from "../../assets/images/avatar-placeholder.png";
+import avatarPlaceholder from "../../assets/images/avatar-placeholder.png";
 import { Avatar } from "../../components";
 
 interface Props {
   user: { username: string; id: string } | null;
+  handleLogout: () => void;
 }
 
-const NavBar: React.FC<Props> = ({ user }) => {
+const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
   const [showMenu, setShowMenu] = React.useState(false);
+  const [avatarUrl, setAvatarUrl] = React.useState<string>();
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  useEffect(() => {
+    //TODO: image does not always load
+    user && setAvatarUrl(`/api/users/image/${user.id}`);
+  }, [user]);
 
   return (
     <Bar>
@@ -29,12 +36,12 @@ const NavBar: React.FC<Props> = ({ user }) => {
           <Column>
             <p>{user.username}</p>
             <Avatar
-              src={avatar}
+              src={avatarUrl ? avatarUrl : avatarPlaceholder}
               alt="avatar"
               size="2rem"
               onClick={toggleMenu}
             />
-            {showMenu && <ProfileMenu />}
+            {showMenu && <ProfileMenu handleLogout={handleLogout} />}
           </Column>
         )}
       </Container>

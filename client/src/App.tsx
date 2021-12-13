@@ -1,8 +1,12 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Page } from "./components";
-import { login } from "./utils/api/users";
-import { getUserFromStorage } from "./utils/storageHelper";
+import { login, register } from "./utils/api/users";
+import {
+  getUserFromStorage,
+  isLoginExpired,
+  removeUserFromStorage,
+} from "./utils/storageHelper";
 import Frontpage from "./views/Frontpage";
 import Home from "./views/Home";
 import NavBar from "./views/NavBar";
@@ -15,6 +19,14 @@ const App: React.FC = () => {
     id: string;
   } | null>(getUserFromStorage());
 
+  // Check if user login has expired
+  // const { pathname } = useLocation();
+  // useEffect(() => {
+  //   if (isLoginExpired()) setUser(null);
+  // }, [pathname]);
+  // TODO: Refresh cookie if login is going to expire soon?
+
+  // TODO: !!! Login does not work
   const handleLogin = async (email: string, password: string) => {
     try {
       const user = await login(email, password);
@@ -25,12 +37,13 @@ const App: React.FC = () => {
   };
 
   const handleLogout = () => {
+    removeUserFromStorage();
     setUser(null);
   };
 
   return (
     <Page>
-      <NavBar user={user} />
+      <NavBar user={user} handleLogout={handleLogout} />
       <Routes>
         <Route
           path="/"
@@ -42,7 +55,10 @@ const App: React.FC = () => {
             )
           }
         />
-        <Route path="/signup" element={<Register />} />
+        <Route
+          path="/signup"
+          element={<Register userId={user?.id} setUser={setUser} />}
+        />
         <Route path="/home" element={<Home userId={user?.id} />} />
         <Route path="/:id" element={<SnippetView userId={user?.id} />} />
       </Routes>

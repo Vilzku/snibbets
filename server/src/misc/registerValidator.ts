@@ -26,7 +26,7 @@ export const validatePassword = (password: string) => {
 };
 
 export const checkUsernameAvailability = async (username: string) => {
-  const result = await isUsernameTaken(username);
+  const result = await isUsernameTaken(username.toLowerCase());
   if (result) return Promise.reject("Username is already taken");
   return true;
 };

@@ -3,7 +3,11 @@ import { Container, Divider, Item } from ".";
 import { faUser, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "../../../components";
 
-const ProfileMenu: React.FC = () => {
+interface Props {
+  handleLogout: () => void;
+}
+
+const ProfileMenu: React.FC<Props> = ({ handleLogout }) => {
   return (
     <Container>
       <Item>
@@ -15,7 +19,7 @@ const ProfileMenu: React.FC = () => {
         Asetukset
       </Item>
       <Divider />
-      <Item>
+      <Item onClick={handleLogout}>
         <Icon icon={faSignOutAlt} />
         Kirjaudu ulos
       </Item>

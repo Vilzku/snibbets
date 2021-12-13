@@ -7,6 +7,7 @@ import Snippet from "./Snippet";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import SubHeader from "./SubHeader";
+import Link from "./Link";
 
 export {
   Card,
@@ -19,4 +20,5 @@ export {
   Avatar,
   Icon,
   SubHeader,
+  Link,
 };

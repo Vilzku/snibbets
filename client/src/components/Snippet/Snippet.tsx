@@ -33,7 +33,6 @@ const Snippet: React.FC<Props> = ({ id, preview, userId }) => {
   if (numberOfLines > 8) {
     snippet?.content.split("\n").forEach((line, i) => {
       if (i < 8) {
-        console.log(line, i);
         content += line + "\n";
       }
     });
