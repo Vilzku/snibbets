@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, TextInput } from "../../../components";
 import { register, RegisterError } from "../../../utils/api/users";
-import { UserData } from "../../../utils/types";
+import { UserType } from "../../../utils/types";
 
 interface FormData {
   username: string;
@@ -30,7 +30,7 @@ const RegisterForm: React.FC<Props> = ({ setUser }) => {
         data.email,
         data.password,
         data.username
-      )) as UserData;
+      )) as UserType;
       setUser({ username, id });
     } catch (error: any) {
       setErrors(error);

@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Bar, Column, Container, Logo, ProfileMenu } from ".";
+import { Bar, Column, Container, Logo } from ".";
 import logo from "../../assets/images/logo.png";
 import avatarPlaceholder from "../../assets/images/avatar-placeholder.png";
 import { Avatar, Icon, Menu, MenuDivider, MenuItem } from "../../components";
-import useOutsideClick from "../../utils/hooks/useOutsideClick";
 import { faCog, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
@@ -18,8 +17,7 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
   const navigate = useNavigate();
 
   const toggleMenu = () => {
-    if (showMenu) return;
-    if (!showMenu) setShowMenu(true);
+    setShowMenu(!showMenu);
   };
 
   useEffect(() => {
@@ -53,9 +51,7 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
                 </MenuItem>
                 <MenuItem>
                   <Icon icon={faCog} />
-                  <div style={{ textDecoration: "line-through" }}>
-                    Asetukset
-                  </div>
+                  <div style={{ textDecoration: "line-through" }}>Settings</div>
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem
@@ -65,7 +61,7 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
                   }}
                 >
                   <Icon icon={faSignOutAlt} />
-                  Kirjaudu ulos
+                  Sign out
                 </MenuItem>
               </Menu>
             )}

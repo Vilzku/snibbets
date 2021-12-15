@@ -1,4 +1,4 @@
-import { Snippet, User, Vote } from "../types";
+import { Snippet, User, Vote, Comment } from "../types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const sortList = (list: any[], sortBy: string, order: string) => {
@@ -38,5 +38,16 @@ export const createVoteObject = (vote: Vote) => {
     snippetId: vote.snippet_id,
     commentId: vote.comment_id,
     positive: vote.positive,
+  };
+};
+
+export const createCommentObject = (comment: Comment) => {
+  return {
+    id: comment.id,
+    userId: comment.user_id,
+    snippetId: comment.snippet_id,
+    content: comment.content,
+    createdAt: comment.created_at,
+    updatedAt: comment.updated_at,
   };
 };

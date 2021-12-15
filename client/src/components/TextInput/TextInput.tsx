@@ -14,12 +14,15 @@ interface Props {
   flex?: boolean;
   autoFocus?: boolean;
   maxLength?: number;
+  noMargin?: boolean;
+  rows?: number;
+  onKeyDown?: (e: any) => void;
 }
 
 const TextInput: React.FC<Props> = (props) => {
-  const { label, hint, error, flex, textArea } = props;
+  const { label, hint, error, flex, textArea, noMargin } = props;
   return (
-    <Container flex={flex}>
+    <Container flex={flex} noMargin={noMargin}>
       {label && <Label>{label}</Label>}
 
       {textArea ? <TextArea {...props} /> : <Input {...props} />}

@@ -6,6 +6,8 @@ const Page = styled.div`
   font-family: "Lato", sans-serif;
   color: ${({ theme }) => theme.colors.black};
   padding-top: 3.5rem;
+  padding-bottom: 5rem;
+  z-index: 0;
 `;
 
 export default Page;

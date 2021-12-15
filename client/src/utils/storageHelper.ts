@@ -1,4 +1,4 @@
-import { UserData } from "./types";
+import { UserType } from "./types";
 
 export const getUserFromStorage = (): {
   username: string;

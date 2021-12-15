@@ -1,11 +1,9 @@
 import axios from "axios";
 import { VoteType } from "../types";
 
-export const getVotes = async (
-  snippetId: string
-): Promise<VoteType[] | void> => {
+export const getVotes = async (postId: string): Promise<VoteType[] | void> => {
   try {
-    const res = await axios.get(`/api/votes/${snippetId}`);
+    const res = await axios.get(`/api/votes/${postId}`);
     if (res.status === 200) {
       return res.data as VoteType[];
     }

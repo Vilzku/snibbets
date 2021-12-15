@@ -1,4 +1,4 @@
-interface UserData {
+interface UserType {
   id: string;
   username: string;
   email: string;
@@ -30,4 +30,4 @@ interface VoteType {
   positive: boolean;
 }
 
-export type { UserData, SnippetType, CommentType, VoteType };
+export type { UserType, SnippetType, CommentType, VoteType };

@@ -1,11 +1,11 @@
 import axios from "axios";
 import { removeUserFromStorage, saveUserToStorage } from "../storageHelper";
-import { UserData } from "../types";
+import { UserType } from "../types";
 
 export const login = async (
   email: string,
   password: string
-): Promise<UserData | void> => {
+): Promise<UserType | void> => {
   try {
     const res = await axios.post("/api/users/login", {
       email,
@@ -36,7 +36,7 @@ export const register = async (
   email: string,
   password: string,
   username: string
-): Promise<UserData | void> => {
+): Promise<UserType | void> => {
   try {
     const res = await axios.post("/api/users/register", {
       email,
@@ -66,7 +66,7 @@ export interface RegisterError {
   location?: string;
 }
 
-export const getUserInfo = async (id: string): Promise<UserData | void> => {
+export const getUserInfo = async (id: string): Promise<UserType | void> => {
   try {
     const res = await axios.get(`/api/users/${id}`);
     if (res.status === 200) {
@@ -105,6 +105,8 @@ export const getImage = async (id: string) => {
     const res = await axios.get(`/api/users/image/${id}`);
     if (res.status === 200) {
       return res.data;
+    } else if (res.status === 404) {
+      return null;
     }
     throw new Error();
   } catch (err: any) {

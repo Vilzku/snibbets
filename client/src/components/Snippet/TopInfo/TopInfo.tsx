@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Avatar, Header, SubHeader } from "../..";
 import avatarPlaceholder from "../../../assets/images/avatar-placeholder.png";
 import { getUserInfo } from "../../../utils/api/users";
-import { UserData } from "../../../utils/types";
+import { UserType } from "../../../utils/types";
 import { Container } from ".";
 import { getCreatedAtString } from "../../../utils/dateHelper";
 
@@ -12,6 +12,7 @@ interface Props {
   updatedAt?: string;
   userId: string;
   titleClickable?: boolean;
+  onClick?: () => void;
 }
 
 const TopInfo: React.FC<Props> = ({
@@ -20,8 +21,9 @@ const TopInfo: React.FC<Props> = ({
   updatedAt,
   userId,
   titleClickable,
+  onClick,
 }) => {
-  const [user, setUser] = React.useState<UserData>({} as UserData);
+  const [user, setUser] = React.useState<UserType>({} as UserType);
   const [avatarUrl, setAvatarUrl] = React.useState<string>();
 
   useEffect(() => {
@@ -41,7 +43,12 @@ const TopInfo: React.FC<Props> = ({
     <Container>
       <Avatar src={avatarUrl || avatarPlaceholder} size="3rem" />
       <div>
-        <Header clickable={titleClickable}>{title}</Header>
+        <Header
+          onClick={onClick ? onClick : () => null}
+          clickable={titleClickable}
+        >
+          {title}
+        </Header>
         <SubHeader>
           {/* TODO: Link to profile */}
           {user.username +

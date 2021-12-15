@@ -11,7 +11,7 @@ const Container = styled.div<Props>`
   width: 12em;
   border-radius: ${({ theme }) => theme.border.radius};
   border: 1px solid ${({ theme }) => theme.colors.lightGrey};
-  z-index: 20;
+  z-index: 101;
   cursor: default;
 `;
 

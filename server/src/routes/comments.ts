@@ -2,18 +2,17 @@ import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
 import { pool } from "../db";
-import { sortList } from "../misc/helpers";
+import { createCommentObject, sortList } from "../misc/helpers";
 import validateToken from "../misc/validation";
 import { Comment } from "../types";
 
 const router = express.Router();
 
 /**
- * @api {get} /comments/:id Get comments for a snippet
+ * @api {get} /api/snippets/:id/comments Get comments for a snippet
  */
 router.get("/:snippetId/comments", async (req: Request, res: Response) => {
   const { snippetId } = req.params;
-  console.log(snippetId);
 
   // TODO: Maybe paginate this?
 
@@ -25,7 +24,7 @@ router.get("/:snippetId/comments", async (req: Request, res: Response) => {
     // TODO: Maybe different sorts?
     const comments: Comment[] = sortList(result.rows, "created_at", "desc");
 
-    return res.send(comments);
+    return res.send(comments.map((comment) => createCommentObject(comment)));
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -33,7 +32,7 @@ router.get("/:snippetId/comments", async (req: Request, res: Response) => {
 });
 
 /**
- * @api {post} /comments/:id Create a comment
+ * @api {post} /api/snippets/:id/comments Create a comment
  * @param {String} [content] The content of the comment
  */
 router.post(
@@ -53,7 +52,7 @@ router.post(
       );
       const comment: Comment = result.rows[0];
 
-      return res.send(comment);
+      return res.send(createCommentObject(comment));
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
@@ -62,7 +61,7 @@ router.post(
 );
 
 /**
- * @api {put} /comments/:id Update a comment
+ * @api {put} /api/snippets/:id/comments/:id Update a comment
  * @param {String} [content] The content of the comment
  */
 router.put(
@@ -83,7 +82,7 @@ router.put(
       if (result.rowCount === 0) return res.sendStatus(404);
       const comment: Comment = result.rows[0];
 
-      return res.send(comment);
+      return res.send(createCommentObject(comment));
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
@@ -92,7 +91,7 @@ router.put(
 );
 
 /**
- * @api {delete} /comments/:id Delete a comment
+ * @api {delete} /api/snippets/:id/comments/:id Delete a comment
  */
 router.delete(
   "/:snippetId/comments/:id",

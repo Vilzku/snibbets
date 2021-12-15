@@ -1,28 +1,33 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-import { Modal } from ".";
-import { Button, Card, Header, ToprightIcon } from ".";
-import { deleteSnippet } from "../utils/api/snippets";
-import { SnippetType } from "../utils/types";
+import {
+  Button,
+  Card,
+  Header,
+  Modal,
+  ToprightIcon,
+} from "../../../../components";
+import { deleteComment } from "../../../../utils/api/comments";
+import { CommentType } from "../../../../utils/types";
 
 interface Props {
-  removeSnippet: (id: string) => void;
-  snippet: SnippetType;
+  removeComment: (id: string) => void;
+  comment: CommentType;
   show: boolean;
   close: () => void;
 }
 
-const DeleteSnippet: React.FC<Props> = ({
-  removeSnippet,
-  snippet,
+const ConfirmModal: React.FC<Props> = ({
+  removeComment,
+  comment,
   show,
   close,
 }) => {
   const handleSubmit = async () => {
     try {
-      const data = await deleteSnippet(snippet.id);
+      const data = await deleteComment(comment.snippetId, comment.id);
       if (data) {
-        removeSnippet(snippet.id);
+        removeComment(comment.id);
         close();
       }
     } catch (error: any) {
@@ -36,10 +41,9 @@ const DeleteSnippet: React.FC<Props> = ({
         <Modal onMouseDown={close}>
           <Card onMouseDown={(e) => e.stopPropagation()}>
             <ToprightIcon icon={faTimes} onClick={close} />
-            <Header center>Snibbet deletion</Header>
+            <Header center>Comment deletion</Header>
             <br />
-            Are you sure you want to delete Snibbet
-            {' "' + snippet.title + '"'}
+            Are you sure you want to delete this comment?
             <br />
             <br />
             <div>
@@ -55,4 +59,4 @@ const DeleteSnippet: React.FC<Props> = ({
   );
 };
 
-export default DeleteSnippet;
+export default ConfirmModal;

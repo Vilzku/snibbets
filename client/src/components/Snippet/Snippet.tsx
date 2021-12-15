@@ -1,6 +1,6 @@
 import {
   faEdit,
-  faEllipsisV,
+  faEllipsisH,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect } from "react";
@@ -23,7 +23,6 @@ interface Props {
   id: string;
   userId?: string | undefined;
   preview?: boolean;
-  newSnippet?: boolean;
   onNewSnippetClick?: () => void;
   removeSnippet?: (id: string) => void;
 }
@@ -32,7 +31,6 @@ const Snippet: React.FC<Props> = ({
   id,
   preview,
   userId,
-  newSnippet,
   onNewSnippetClick,
   removeSnippet,
 }) => {
@@ -48,8 +46,8 @@ const Snippet: React.FC<Props> = ({
       const data = await getSnippet(id);
       if (data) setSnippet(data);
     };
-    if (!newSnippet) getData();
-  }, [id, newSnippet]);
+    getData();
+  }, [id]);
 
   // Open individual snippet
   const handleClick = () => {
@@ -59,23 +57,6 @@ const Snippet: React.FC<Props> = ({
   const updateSnippet = (updatedSnippet: SnippetType) => {
     setSnippet(updatedSnippet);
   };
-
-  // Placeholder snippet for creating a new snippet
-  if (newSnippet)
-    return (
-      <div onClick={onNewSnippetClick}>
-        {userId && (
-          <TopInfo
-            title="Create something new"
-            userId={userId}
-            titleClickable
-          />
-        )}
-        <CodeBlock hover>
-          <Code>{"Write some code here..."}</Code>
-        </CodeBlock>
-      </div>
-    );
 
   if (!snippet) return null;
 
@@ -97,11 +78,11 @@ const Snippet: React.FC<Props> = ({
 
   return (
     <>
-      <Card clickable={preview} onClick={preview ? handleClick : () => null}>
+      <Card clickable={preview}>
         {/* Menu icon */}
         {snippet.userId === userId && (
           <ToprightIcon
-            icon={faEllipsisV}
+            icon={faEllipsisH}
             onClick={(e) => {
               e.stopPropagation();
               setShowMenu(true);
@@ -140,8 +121,9 @@ const Snippet: React.FC<Props> = ({
           updatedAt={snippet.updatedAt}
           userId={snippet.userId}
           titleClickable={preview}
+          onClick={preview ? handleClick : () => null}
         />
-        <CodeBlock>
+        <CodeBlock onClick={preview ? handleClick : () => null}>
           <Code>{content}</Code>
           <ShowMore show={preview ? numberOfLines > 8 : false}>
             Show more

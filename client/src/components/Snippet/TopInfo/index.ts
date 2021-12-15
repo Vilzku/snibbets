@@ -1,5 +1,5 @@
 import TopInfo from "./TopInfo";
-import Container from "./Container";
+import Container from "./TopInfo.styles";
 
 export default TopInfo;
 

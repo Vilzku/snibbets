@@ -11,14 +11,12 @@ const CodeBlock = styled.div<Props>`
   background: ${({ theme }) => theme.colors.lightGrey};
   border-radius: 0.5rem;
   white-space: pre-wrap;
+  flex: 1;
 
-  ${({ hover, theme }) =>
-    hover &&
-    `
   &:hover {
     cursor: pointer;
-    background: ${lighten(0.03, theme.colors.lightGrey)};
-  }`}
+    background: ${({ theme }) => lighten(0.01, theme.colors.lightGrey)};
+  }
 `;
 
 export default CodeBlock;

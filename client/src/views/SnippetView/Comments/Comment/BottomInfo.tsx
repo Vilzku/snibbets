@@ -1,44 +1,43 @@
-import {
-  faCommentAlt,
-  faShareAlt,
-  faThumbsDown,
-  faThumbsUp,
-} from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Container } from ".";
-import { Icon } from "../..";
+import { BottomContainer, LikeButton } from ".";
+import { SubHeader } from "../../../../components";
 import {
   deleteVote,
   getVotes,
   postVote,
   updateVote,
-} from "../../../utils/api/votes";
-import { VoteType } from "../../../utils/types";
+} from "../../../../utils/api/votes";
+import { getCreatedAtString } from "../../../../utils/dateHelper";
+import { VoteType } from "../../../../utils/types";
 
 interface Props {
-  snippetId: string;
+  createdAt: string;
+  updatedAt: string | undefined;
   userId: string | undefined;
+  commentId: string;
 }
 
-const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
+const BottomInfo: React.FC<Props> = ({
+  createdAt,
+  updatedAt,
+  userId,
+  commentId,
+}) => {
   const [votes, setVotes] = useState<VoteType[]>([]);
-  const navigate = useNavigate();
-
   const userVote = userId
     ? votes.find((vote: VoteType) => vote.userId === userId)
     : undefined;
 
   /**
-   * Get votes for snippet
+   * Get votes for comment
    */
   useEffect(() => {
     const getData = async () => {
-      const data = await getVotes(snippetId);
+      const data = await getVotes(commentId);
       if (data) setVotes(data);
     };
     getData();
-  }, [snippetId]);
+  }, [commentId]);
 
   /**
    * Create new vote, update existing vote or delete vote based
@@ -50,7 +49,7 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
     try {
       if (!userVote) {
         // Create new vote if user has not voted yet
-        const data = await postVote(snippetId, positive, "snippet");
+        const data = await postVote(commentId, positive, "comment");
         if (data) {
           setVotes((votes) => [...votes, data]);
         }
@@ -81,41 +80,24 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
   const negativeVotes = votes.filter((vote: VoteType) => !vote.positive).length;
 
   return (
-    <Container>
-      <Button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleVote("positive");
-        }}
-        active={userVote && userVote.positive}
-      >
-        <Icon icon={faThumbsUp} />
-        {positiveVotes + " Likes"}
-      </Button>
-      <Button
-        onClick={(e) => {
-          e.stopPropagation();
-          handleVote("negative");
-        }}
-        active={userVote && !userVote.positive}
-      >
-        <Icon icon={faThumbsDown} />
-        {negativeVotes + " Dislikes"}
-      </Button>
-      <Button onClick={() => navigate("/" + snippetId)}>
-        <Icon icon={faCommentAlt} />
-        {" Comment"}
-      </Button>
-      <Button
-        onClick={() => {
-          //TODO: Share
-        }}
-      >
-        <Icon icon={faShareAlt} />
-        {" Share"}
-      </Button>
-    </Container>
+    <BottomContainer>
+      <SubHeader>
+        <LikeButton onClick={() => handleVote("positive")}>
+          {positiveVotes + " likes"}{" "}
+        </LikeButton>
+        <b>-</b>
+        <LikeButton onClick={() => handleVote("negative")}>
+          {negativeVotes + " dislikes"}
+        </LikeButton>
+        {" - " +
+          getCreatedAtString(createdAt as string) +
+          (updatedAt
+            ? " - updated " +
+              getCreatedAtString(updatedAt as string).toLowerCase()
+            : "")}
+      </SubHeader>
+    </BottomContainer>
   );
 };
 
-export default BottomBar;
+export default BottomInfo;

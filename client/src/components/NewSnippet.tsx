@@ -1,19 +1,28 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
-import { Modal } from ".";
-import { Button, Card, Header, Snippet, TextInput, ToprightIcon } from ".";
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { Avatar, Modal } from ".";
+import { Button, Card, Header, TextInput, ToprightIcon } from ".";
 import { postSnippet } from "../utils/api/snippets";
 import { SnippetType } from "../utils/types";
+import { CodeBlock } from "./Snippet";
 
 interface Props {
   addNewSnippet: (newSnippet: SnippetType) => void;
   userId: string | undefined;
 }
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+`;
+
 const NewSnippet: React.FC<Props> = ({ addNewSnippet, userId }) => {
   const [showModal, setShowModal] = React.useState(false);
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
+  const [avatarUrl, setAvatarUrl] = React.useState<string>();
 
   const handleSubmit = async () => {
     try {
@@ -27,14 +36,19 @@ const NewSnippet: React.FC<Props> = ({ addNewSnippet, userId }) => {
     }
   };
 
+  useEffect(() => {
+    //TODO: image does not always load
+    if (userId) setAvatarUrl(`/api/users/image/${userId}`);
+  }, [userId]);
+
   return (
     <>
-      <Snippet
-        id=""
-        newSnippet={true}
-        onNewSnippetClick={() => setShowModal(true)}
-        userId={userId}
-      />
+      <Container>
+        <Avatar src={avatarUrl} size="3rem" />
+        <CodeBlock onClick={() => setShowModal(true)}>
+          Write some code here...
+        </CodeBlock>
+      </Container>
 
       {showModal && (
         <Modal onMouseDown={() => setShowModal(false)}>
@@ -59,6 +73,7 @@ const NewSnippet: React.FC<Props> = ({ addNewSnippet, userId }) => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               autoFocus
+              placeholder="Write your code here..."
             />
             <Button
               onClick={handleSubmit}

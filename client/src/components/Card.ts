@@ -22,12 +22,12 @@ const Card = styled.div<Props>`
   width: ${({ width }) => width};
   max-width: ${({ maxWidth }) => maxWidth};
   box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
+  z-index: 1;
 
   ${({ clickable }) =>
     clickable &&
     `
   &:hover {
-    cursor: pointer;
     border: ${"1px solid " + darken(0.08, "#e2e4e7")};
   }`}
 `;
