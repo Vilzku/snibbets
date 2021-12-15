@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Avatar, Header, SubHeader } from "../..";
-import avatar from "../../../assets/images/avatar-placeholder.png";
+import avatarPlaceholder from "../../../assets/images/avatar-placeholder.png";
 import { getUserInfo } from "../../../utils/api/users";
 import { UserData } from "../../../utils/types";
 import { Container } from ".";
@@ -8,7 +8,8 @@ import { getCreatedAtString } from "../../../utils/dateHelper";
 
 interface Props {
   title: string;
-  createdAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   userId: string;
   titleClickable?: boolean;
 }
@@ -16,10 +17,12 @@ interface Props {
 const TopInfo: React.FC<Props> = ({
   title,
   createdAt,
+  updatedAt,
   userId,
   titleClickable,
 }) => {
   const [user, setUser] = React.useState<UserData>({} as UserData);
+  const [avatarUrl, setAvatarUrl] = React.useState<string>();
 
   useEffect(() => {
     const getData = async () => {
@@ -29,14 +32,23 @@ const TopInfo: React.FC<Props> = ({
     getData();
   }, [userId]);
 
+  useEffect(() => {
+    //TODO: image does not always load
+    user && setAvatarUrl(`/api/users/image/${user.id}`);
+  }, [user]);
+
   return (
     <Container>
-      <Avatar src={avatar} size="3rem" />
+      <Avatar src={avatarUrl || avatarPlaceholder} size="3rem" />
       <div>
         <Header clickable={titleClickable}>{title}</Header>
         <SubHeader>
           {/* TODO: Link to profile */}
-          {user.username + " - " + getCreatedAtString(createdAt)}
+          {user.username +
+            (createdAt ? " - " + getCreatedAtString(createdAt as string) : "") +
+            (updatedAt
+              ? " - updated " + getCreatedAtString(updatedAt as string)
+              : "")}
         </SubHeader>
       </div>
     </Container>

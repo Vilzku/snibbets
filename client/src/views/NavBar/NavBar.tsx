@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bar, Column, Container, Logo, ProfileMenu } from ".";
 import logo from "../../assets/images/logo.png";
 import avatarPlaceholder from "../../assets/images/avatar-placeholder.png";
-import { Avatar } from "../../components";
+import { Avatar, Icon, Menu, MenuDivider, MenuItem } from "../../components";
+import useOutsideClick from "../../utils/hooks/useOutsideClick";
+import { faCog, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   user: { username: string; id: string } | null;
@@ -13,9 +15,11 @@ interface Props {
 const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
   const [showMenu, setShowMenu] = React.useState(false);
   const [avatarUrl, setAvatarUrl] = React.useState<string>();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
+    if (showMenu) return;
+    if (!showMenu) setShowMenu(true);
   };
 
   useEffect(() => {
@@ -27,7 +31,7 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
     <Bar>
       <Container>
         <Column>
-          <Logo src={logo} alt="logo" />
+          <Logo src={logo} alt="logo" onClick={() => navigate("/")} />
           <Link to="/">Something</Link>
           <Link to="/">Hmm</Link>
           <Link to="/">Still something</Link>
@@ -36,12 +40,35 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
           <Column>
             <p>{user.username}</p>
             <Avatar
-              src={avatarUrl ? avatarUrl : avatarPlaceholder}
+              src={avatarUrl || avatarPlaceholder}
               alt="avatar"
               size="2rem"
               onClick={toggleMenu}
             />
-            {showMenu && <ProfileMenu handleLogout={handleLogout} />}
+            {showMenu && (
+              <Menu closeMenu={() => setShowMenu(false)}>
+                <MenuItem>
+                  <Icon icon={faUser} />
+                  Profile
+                </MenuItem>
+                <MenuItem>
+                  <Icon icon={faCog} />
+                  <div style={{ textDecoration: "line-through" }}>
+                    Asetukset
+                  </div>
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem
+                  onClick={() => {
+                    setShowMenu(false);
+                    handleLogout();
+                  }}
+                >
+                  <Icon icon={faSignOutAlt} />
+                  Kirjaudu ulos
+                </MenuItem>
+              </Menu>
+            )}
           </Column>
         )}
       </Container>

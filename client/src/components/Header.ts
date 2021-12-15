@@ -3,11 +3,14 @@ import styled from "styled-components";
 
 interface Props {
   clickable?: boolean;
+  center?: boolean;
 }
 
 const Header = styled.header<Props>`
   font-size: 2rem;
   font-weight: 600;
+  text-align: ${({ center }) => (center ? "center" : "left")};
+  word-wrap: break-word;
 
   ${({ clickable, theme }) =>
     clickable &&

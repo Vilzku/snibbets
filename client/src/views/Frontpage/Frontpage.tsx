@@ -1,11 +1,9 @@
 import React from "react";
+import { LoginCard } from ".";
 import { PageContainer } from "../../components";
-import { UserData } from "../../utils/types";
-import Home from "../Home";
-import LoginCard from "./LoginCard";
 
 interface Props {
-  handleLogin: (email: string, password: string) => void;
+  handleLogin: (user: { username: string; id: string }) => void;
 }
 
 const Frontpage: React.FC<Props> = ({ handleLogin }) => {

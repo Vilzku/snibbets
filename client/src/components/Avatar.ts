@@ -12,7 +12,9 @@ const Avatar = styled.img<Props>`
   margin: ${({ center }) => (center ? "auto" : "0")};
   aspect-ratio: 1;
   border: ${({ border, theme }) =>
-    border ? "0.2rem solid " + theme.colors.primary : "none"};
+    border
+      ? "0.2rem solid " + theme.colors.primary
+      : "1px solid " + theme.colors.lightGrey};
   border-radius: 100%;
   height: ${({ size }) => size || "2rem"};
   width: ${({ size }) => size || "2rem"};

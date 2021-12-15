@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { List } from ".";
-import { PageContainer, Snippet } from "../../components";
+import { Divider, NewSnippet, PageContainer, Snippet } from "../../components";
 import { getAllSnippets } from "../../utils/api/snippets";
 import { SnippetType } from "../../utils/types";
 
@@ -29,17 +29,28 @@ const Home: React.FC<Props> = ({ userId }) => {
     getData();
   }, []);
 
+  const addNewSnippet = (newSnippet: SnippetType) => {
+    setData([newSnippet, ...data]);
+  };
+
+  const removeSnippet = (id: string) => {
+    setData(data.filter((snippet) => snippet.id !== id));
+  };
+
   return (
     <PageContainer>
       <List>
-        <Snippet
-          preview
-          id={"665756d3-bdbd-4296-9bf2-b33567893a6b"}
-          userId={userId}
-        />
+        <NewSnippet addNewSnippet={addNewSnippet} userId={userId} />
+        <Divider />
         {data &&
           data.map((item) => (
-            <Snippet preview id={item.id} key={item.id} userId={userId} />
+            <Snippet
+              preview
+              id={item.id}
+              key={item.id}
+              userId={userId}
+              removeSnippet={removeSnippet}
+            />
           ))}
       </List>
     </PageContainer>

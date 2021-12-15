@@ -26,14 +26,8 @@ const App: React.FC = () => {
   // }, [pathname]);
   // TODO: Refresh cookie if login is going to expire soon?
 
-  // TODO: !!! Login does not work
-  const handleLogin = async (email: string, password: string) => {
-    try {
-      const user = await login(email, password);
-      if (user) setUser(user);
-    } catch (error: any) {
-      throw error;
-    }
+  const handleLogin = async (user: { username: string; id: string }) => {
+    setUser(user);
   };
 
   const handleLogout = () => {

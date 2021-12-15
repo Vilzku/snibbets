@@ -3,7 +3,7 @@ import Bar from "./Bar";
 import Logo from "./Logo";
 import Container from "./Container";
 import Column from "./Column";
-import ProfileMenu from "./ProfileMenu";
+import ProfileMenu from "../../components/Menu";
 
 export default NavBar;
 
