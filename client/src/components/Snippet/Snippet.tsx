@@ -23,17 +23,10 @@ interface Props {
   id: string;
   userId?: string | undefined;
   preview?: boolean;
-  onNewSnippetClick?: () => void;
   removeSnippet?: (id: string) => void;
 }
 
-const Snippet: React.FC<Props> = ({
-  id,
-  preview,
-  userId,
-  onNewSnippetClick,
-  removeSnippet,
-}) => {
+const Snippet: React.FC<Props> = ({ id, preview, userId, removeSnippet }) => {
   const [showMenu, setShowMenu] = React.useState(false);
   const [showEditModal, setShowEditModal] = React.useState(false);
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
@@ -51,7 +44,7 @@ const Snippet: React.FC<Props> = ({
 
   // Open individual snippet
   const handleClick = () => {
-    navigate("/" + id);
+    navigate("/snippet/" + id);
   };
 
   const updateSnippet = (updatedSnippet: SnippetType) => {

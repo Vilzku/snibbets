@@ -1,6 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { List } from ".";
-import { Divider, NewSnippet, PageContainer, Snippet } from "../../components";
+import {
+  Button,
+  Divider,
+  NewSnippet,
+  PageContainer,
+  Snippet,
+} from "../../components";
 import { getAllSnippets } from "../../utils/api/snippets";
 import { SnippetType } from "../../utils/types";
 
@@ -8,42 +15,71 @@ interface Props {
   userId: string | undefined;
 }
 
+const PAGE_AMOUNT = 5;
+
 const Home: React.FC<Props> = ({ userId }) => {
-  const [data, setData] = React.useState<SnippetType[]>([]);
+  const [snippets, setSnippets] = useState<SnippetType[]>([]);
+  const [showMoreButton, setShowMoreButton] = useState(true);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
 
   useEffect(() => {
     const getData = async () => {
       try {
         const data = await getAllSnippets({
-          amount: 5,
-          page: undefined,
-          sortBy: undefined,
-          order: undefined,
+          amount: PAGE_AMOUNT,
+          page: 1,
+          search: search.length > 0 ? search : undefined,
         });
-        if (data) setData(data);
+        if (data) {
+          setSnippets(data);
+          if (data.length < PAGE_AMOUNT) setShowMoreButton(false);
+        }
       } catch (error) {
         console.log(error);
         // TODO: !!! Error handling, maybe loading indicator
       }
     };
     getData();
-  }, []);
+  }, [search]);
+
+  const loadMore = async () => {
+    const page = snippets.length / PAGE_AMOUNT + 1;
+    try {
+      const data = await getAllSnippets({
+        amount: PAGE_AMOUNT,
+        page: page,
+      });
+      if (data) {
+        setSnippets((snippets) => [...snippets, ...data]);
+        if (data.length < PAGE_AMOUNT) setShowMoreButton(false);
+      }
+    } catch (error) {
+      console.log(error);
+      // TODO: !!! Error handling, maybe loading indicator
+    }
+  };
 
   const addNewSnippet = (newSnippet: SnippetType) => {
-    setData([newSnippet, ...data]);
+    setSnippets([newSnippet, ...snippets]);
   };
 
   const removeSnippet = (id: string) => {
-    setData(data.filter((snippet) => snippet.id !== id));
+    setSnippets(snippets.filter((snippet) => snippet.id !== id));
   };
 
   return (
     <PageContainer>
       <List>
-        <NewSnippet addNewSnippet={addNewSnippet} userId={userId} />
-        <Divider />
-        {data &&
-          data.map((item) => (
+        {userId && (
+          <>
+            <NewSnippet addNewSnippet={addNewSnippet} userId={userId} />
+            <Divider />
+          </>
+        )}
+        {snippets &&
+          snippets.map((item) => (
             <Snippet
               preview
               id={item.id}
@@ -52,6 +88,7 @@ const Home: React.FC<Props> = ({ userId }) => {
               removeSnippet={removeSnippet}
             />
           ))}
+        {showMoreButton && <Button onClick={loadMore}>Show more</Button>}
       </List>
     </PageContainer>
   );

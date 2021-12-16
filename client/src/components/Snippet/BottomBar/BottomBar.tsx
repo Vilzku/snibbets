@@ -102,7 +102,7 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
         <Icon icon={faThumbsDown} />
         {negativeVotes + " Dislikes"}
       </Button>
-      <Button onClick={() => navigate("/" + snippetId)}>
+      <Button onClick={() => navigate("/snippet/" + snippetId)}>
         <Icon icon={faCommentAlt} />
         {" Comment"}
       </Button>

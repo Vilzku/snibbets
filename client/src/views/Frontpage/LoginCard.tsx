@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card, TextInput, Link } from "../../components";
 import { login } from "../../utils/api/users";
+import { BottomInfo } from "../Register/RegisterCard";
 
 interface Props {
   handleLogin: (user: { username: string; id: string }) => void;
@@ -23,25 +24,29 @@ const LoginCard: React.FC<Props> = ({ handleLogin }) => {
   };
 
   return (
-    <Card width="25rem">
-      <form>
-        <TextInput
-          type="email"
-          value={email}
-          label="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextInput
-          type="password"
-          value={password}
-          label="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </form>
-      <Button onClick={handleClick}>Login</Button>
-      <Link to="/signup">Sign up</Link>
-      {error && <p>{error}</p>}
-    </Card>
+    <div>
+      <Card>
+        <form>
+          <TextInput
+            type="email"
+            value={email}
+            label="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextInput
+            type="password"
+            value={password}
+            label="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </form>
+        <Button onClick={handleClick}>Login</Button>
+        {error && <p>{error}</p>}
+      </Card>
+      <BottomInfo>
+        <Link to="/signup">Sign up</Link>
+      </BottomInfo>
+    </div>
   );
 };
 

@@ -30,6 +30,8 @@ const NewSnippet: React.FC<Props> = ({ addNewSnippet, userId }) => {
       if (snippet) {
         addNewSnippet(snippet);
         setShowModal(false);
+        setTitle("");
+        setContent("");
       }
     } catch (error: any) {
       console.error(error.message);

@@ -1,7 +1,7 @@
 import { faReply } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { CommentCard, Comment, NewCommentContainer, SendIcon } from ".";
-import { Avatar, Divider, TextInput } from "../../../components";
+import { CommentCard, Comment, NewCommentContainer } from ".";
+import { Avatar, Divider, SubmitIcon, TextInput } from "../../../components";
 import { getComments, postComment } from "../../../utils/api/comments";
 import { CommentType } from "../../../utils/types";
 
@@ -74,7 +74,7 @@ const Comments: React.FC<Props> = ({ snippetId, userId }) => {
             }
           }}
         />
-        <SendIcon icon={faReply} onClick={handleSubmit} />
+        <SubmitIcon icon={faReply} onClick={handleSubmit} />
       </NewCommentContainer>
       <Divider />
       {comments.length === 0 && (

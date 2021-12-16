@@ -104,7 +104,6 @@ router.get("/:id", async (req: Request, res: Response) => {
     if (!user) {
       return res.sendStatus(404);
     }
-
     return res.send(createUserObject(user));
   } catch (err) {
     console.error(err);
@@ -114,10 +113,25 @@ router.get("/:id", async (req: Request, res: Response) => {
 
 /**
  * @api {patch} /api/users/ Edit user profile
+ * @apiParam {String} [username] The username of the user
+ * @apiParam {String} [email] The login email of the user
+ * @apiParam {String} [bio] The bio of the user
  */
 router.patch("/", validateToken, async (req: Request, res: Response) => {
-  // TODO: impelement edit user
-  return res.status(404).send("Not implemented");
+  const { userId } = req;
+  const { username, email, bio } = req.body;
+
+  try {
+    const result = await pool.query(
+      "UPDATE users SET username = $1, email = $2, bio = $3 WHERE id = $4 RETURNING *",
+      [username, email, bio, userId]
+    );
+    const user: User = result.rows[0];
+    return res.send(createUserObject(user));
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
 });
 
 /**

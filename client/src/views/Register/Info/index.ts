@@ -1,6 +1,6 @@
 import Info from "./Info";
-import Container from "./Container";
+import { Container, TextGrid } from "./Info.styles";
 
 export default Info;
 
-export { Container };
+export { Container, TextGrid };

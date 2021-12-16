@@ -2,7 +2,7 @@
   "name": "snibbets",
   "version": "1.0.0",
   "scripts": {
-    "start": "yarn && concurrently \"yarn start:client\" \"yarn: start:server\"",
+    "start": "yarn && concurrently \"yarn start:client\" \"yarn start:server\"",
     "dev": "yarn && concurrently \"yarn dev:client\" \"yarn dev:server\"",
     "start:client": "cd client && yarn && yarn start",
     "start:server": "yarn build:server && yarn start",

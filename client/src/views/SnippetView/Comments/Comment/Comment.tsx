@@ -15,12 +15,12 @@ import {
   TextContainer,
   UpperContainer,
 } from ".";
-import { SendIcon } from "..";
 import {
   Avatar,
   Icon,
   Menu,
   MenuItem,
+  SubmitIcon,
   TextInput,
 } from "../../../../components";
 import { editComment } from "../../../../utils/api/comments";
@@ -111,7 +111,7 @@ const Comment: React.FC<Props> = ({
                     onClick={() => setShowMenu(!showMenu)}
                   />
                 ) : (
-                  <SendIcon
+                  <SubmitIcon
                     icon={faReply}
                     onClick={handleSubmit}
                     style={{ marginLeft: "0.5rem" }}

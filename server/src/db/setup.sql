@@ -1,13 +1,17 @@
 
-/* DATABASE NAME SNIBBETS*/
 
-/*
-GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
-*/
+-- Do these after creating the tables:
+-- CREATE USER snibbetuser WITH ENCRYPTED PASSWORD 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+-- GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
+
+
+-- DROP DATABASE [IF EXISTS] snibbets;
+-- CREATE DATABASE snibbets;
 
 CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) NOT NULL,
@@ -27,7 +31,7 @@ CREATE TABLE IF NOT EXISTS snippets (
   title VARCHAR(100) NOT NULL,
   content TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP,
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)
     REFERENCES users(id)

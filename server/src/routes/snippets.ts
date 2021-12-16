@@ -16,6 +16,7 @@ const router = express.Router();
  * @param {string} [order=desc] Sort order
  */
 router.get("/", async (req: Request, res: Response) => {
+  const search = req.query.search;
   const sortBy = (req.query.sortBy as string) || "created_at";
   const order = (req.query.order as string) || "desc";
   const amount = req.query.amount ? parseInt(req.query.amount as string) : 10;
@@ -24,11 +25,37 @@ router.get("/", async (req: Request, res: Response) => {
   if (page <= 0 || amount <= 0) return res.sendStatus(400);
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM snippets ORDER BY $1 FETCH NEXT $2 ROWS ONLY OFFSET $3",
-      [`${sortBy} ${order}`, amount, offset]
-    );
+    // TODO: Sorting just does not work and I do not have time to find a fix
+    const result = search
+      ? await pool.query(
+          "SELECT * FROM snippets WHERE content LIKE $1 OR title LIKE $1 ORDER BY created_at desc FETCH NEXT $2 ROWS ONLY OFFSET $3",
+          [`%${search}%`, amount, offset]
+        )
+      : await pool.query(
+          "SELECT * FROM snippets ORDER BY created_at desc FETCH NEXT $1 ROWS ONLY OFFSET $2",
+          [amount, offset]
+        );
     const snippets: Snippet[] = sortList(result.rows, sortBy, order);
+
+    return res.send(snippets.map((snippet) => createSnippetObject(snippet)));
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
+/**
+ * @api {get} /api/snippets/user/:id Get a snippet for single user
+ */
+router.get("/user/:userId", async (req: Request, res: Response) => {
+  const { userId } = req.params;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM snippets WHERE user_id = $1",
+      [userId]
+    );
+    const snippets: Snippet[] = sortList(result.rows, "created_at", "desc");
 
     return res.send(snippets.map((snippet) => createSnippetObject(snippet)));
   } catch (err) {

@@ -1,5 +1,3 @@
-import { UserType } from "./types";
-
 export const getUserFromStorage = (): {
   username: string;
   id: string;
@@ -24,7 +22,7 @@ export const saveUserToStorage = (
   localStorage.setItem("user_id", data.id);
   localStorage.setItem(
     "login_expiration",
-    (new Date().getTime() + expirationTime).toString()
+    (Number(Date.now()) + expirationTime).toString()
   );
 };
 
@@ -41,9 +39,13 @@ export const isLoginExpired = () => {
     return true;
   }
 
-  if (new Date() > new Date(parseInt(expiration))) {
+  if (Date.now() > Number(expiration)) {
     removeUserFromStorage();
     return true;
   }
   return false;
+};
+
+export const updateUserToStorage = (username: string) => {
+  localStorage.setItem("username", username);
 };

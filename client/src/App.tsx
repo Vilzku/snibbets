@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Page } from "./components";
-import { login, register } from "./utils/api/users";
 import {
   getUserFromStorage,
   isLoginExpired,
@@ -12,6 +11,7 @@ import Home from "./views/Home";
 import NavBar from "./views/NavBar";
 import Register from "./views/Register";
 import SnippetView from "./views/SnippetView";
+import User from "./views/User";
 
 const App: React.FC = () => {
   const [user, setUser] = React.useState<{
@@ -20,10 +20,10 @@ const App: React.FC = () => {
   } | null>(getUserFromStorage());
 
   // Check if user login has expired
-  // const { pathname } = useLocation();
-  // useEffect(() => {
-  //   if (isLoginExpired()) setUser(null);
-  // }, [pathname]);
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (isLoginExpired()) setUser(null);
+  }, [pathname]);
   // TODO: Refresh cookie if login is going to expire soon?
 
   const handleLogin = async (user: { username: string; id: string }) => {
@@ -54,7 +54,11 @@ const App: React.FC = () => {
           element={<Register userId={user?.id} setUser={setUser} />}
         />
         <Route path="/home" element={<Home userId={user?.id} />} />
-        <Route path="/:id" element={<SnippetView userId={user?.id} />} />
+        <Route path="/user/:id" element={<User userId={user?.id} />} />
+        <Route
+          path="/snippet/:id"
+          element={<SnippetView userId={user?.id} />}
+        />
       </Routes>
     </Page>
   );

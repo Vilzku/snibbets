@@ -15,15 +15,3 @@ export const NewCommentContainer = styled.div`
   gap: 0.5rem;
   align-items: center;
 `;
-
-export const SendIcon = styled(Icon)`
-  padding: 0.75rem 0.8rem;
-  border-radius: 100%;
-  background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.white};
-
-  &:hover {
-    cursor: pointer;
-    background: ${({ theme }) => darken(0.08, theme.colors.primary)};
-  }
-`;

@@ -12,11 +12,17 @@ export const getCreatedAtString = (dateString: string) => {
   if (date.getTime() > hoursAgo.getTime()) {
     for (let i = 9; i > 0; i--) {
       hoursAgo.setHours(hoursAgo.getHours() + 1);
-      if (date.getTime() < hoursAgo.getTime()) return `${i} hours ago`;
+      if (date.getTime() < hoursAgo.getTime())
+        return i === 1 ? "1 hour ago" : `${i} hours ago`;
     }
-    for (let i = 59; i > 0; i--) {
+    for (let i = 59; i >= 0; i--) {
       hoursAgo.setMinutes(hoursAgo.getMinutes() + 1);
-      if (date.getTime() < hoursAgo.getTime()) return `${i} minutes ago`;
+      if (date.getTime() < hoursAgo.getTime())
+        return i === 0
+          ? "Less than minute ago"
+          : i === 1
+          ? "1 minute ago"
+          : `${i} minutes ago`;
     }
   }
 

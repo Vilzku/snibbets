@@ -1,5 +1,9 @@
 import axios from "axios";
-import { removeUserFromStorage, saveUserToStorage } from "../storageHelper";
+import {
+  removeUserFromStorage,
+  saveUserToStorage,
+  updateUserToStorage,
+} from "../storageHelper";
 import { UserType } from "../types";
 
 export const login = async (
@@ -107,6 +111,31 @@ export const getImage = async (id: string) => {
       return res.data;
     } else if (res.status === 404) {
       return null;
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response && err.response.status === 500) {
+      throw new Error("Server error, try again later");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};
+
+export const patchUser = async (
+  username: string | undefined,
+  email: string | undefined,
+  bio: string | undefined
+): Promise<UserType | void> => {
+  try {
+    const res = await axios.patch("/api/users/", {
+      username,
+      email,
+      bio,
+    });
+    if (res.status === 200) {
+      if (res.data.username) updateUserToStorage(res.data.username);
+      return res.data;
     }
     throw new Error();
   } catch (err: any) {

@@ -16,6 +16,7 @@ import { Item as MenuItem, Divider as MenuDivider } from "./Menu";
 import Modal from "./Modal";
 import EditSnippet from "./EditSnippet";
 import DeleteSnippet from "./DeleteSnippet";
+import SubmitIcon from "./SubmitIcon";
 
 export {
   Card,
@@ -38,4 +39,5 @@ export {
   Modal,
   EditSnippet,
   DeleteSnippet,
+  SubmitIcon,
 };

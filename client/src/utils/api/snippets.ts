@@ -6,6 +6,7 @@ interface ParamsType {
   page?: number;
   sortBy?: "title" | "createdAt" | "updatedAt";
   order?: "desc" | "asc";
+  search?: string;
 }
 
 export const getAllSnippets = async (
@@ -43,6 +44,26 @@ export const getSnippet = async (id: string): Promise<SnippetType | void> => {
       );
     } else if (err.response && err.response.status === 404) {
       throw new Error("Snippet not found");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};
+
+export const getUserSnippets = async (
+  userId: string
+): Promise<SnippetType[] | void> => {
+  try {
+    const res = await axios.get(`/api/snippets/user/${userId}`);
+    if (res.status === 200) {
+      return res.data as SnippetType[];
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response && err.response.status === 500) {
+      throw new Error(
+        "Something went wrong on the server side, try again later"
+      );
     } else {
       throw new Error("Something went wrong, reload the page and try again");
     }
