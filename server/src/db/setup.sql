@@ -1,17 +1,17 @@
 
--- Do these AFTER creating the tables:
--- REMEMBER TO CHANGE USERNAME AND PASSWORD TO MATCH YOUR .ENV
+---- Do these AFTER creating the tables
+---- REMEMBER TO CHANGE USERNAME AND PASSWORD TO MATCH YOUR .ENV
 
-CREATE USER snibbetuser WITH ENCRYPTED PASSWORD 'G9kn5tGZwRGcdPEs3quurZ66qTFDqe22';
+-- CREATE USER snibbetuser WITH ENCRYPTED PASSWORD 'G9kn5tGZwRGcdPEs3quurZ66qTFDqe22';
 
--- Switch to right database before running grants
-\c snibbets
+---- Switch to right database before running grants
+-- \c snibbets
 
-GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
-GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
+-- GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
 
 -------------------------------------------------
 -------------------------------------------------

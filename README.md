@@ -1,8 +1,6 @@
-# **WORK-IN-PROGRESS**
-
 # Introduction
 
-This application shows snippets uploaded by the users.
+This application shows snippets uploaded by the users. Created for LUT University course Web Applications. I plan on doing more development on this porject in the future but as for now this is the version that is getting graded.
 
 Feature list is displayed below.
 
@@ -32,7 +30,7 @@ Everything needed to run the server should be able to be executed with command y
 `yarn start`
 `yarn dev`
 
-The project is fully built on TypeScript and most of the errors are usually related to typing errors if not all the necessary packages are not installed. Therefore it may sometimes be required to install ja build both client and server separately by hand.
+The project is fully built on TypeScript and most of the errors are usually related to typing errors if not all the necessary packages are not installed. Therefore it may sometimes be required to install ja build both client and server separately by hand. Production build was such a nightmare that I am not even going to document it until I get it working.
 
 # Feature list and points
 
@@ -49,7 +47,7 @@ The project is fully built on TypeScript and most of the errors are usually rela
 | Last edited timestamp is stored and shown with posts/comments                                                      |      2 |
 | **Total**                                                                                                          | **48** |
 
-The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. In regards to points, I think there is room to get points from the UX desing and usability point of view but it is not listed as maximum points is reached anyway.
+The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. In regards to points, I think there is room to get points from the UX desing and usability point of view but these are not listed as maximum points should be reached anyway.
 
 # Planning
 
