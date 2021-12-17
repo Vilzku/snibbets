@@ -46,10 +46,21 @@ const Frontpage: React.FC<Props> = ({ handleLogin }) => {
         <LoginCard handleLogin={handleLogin} />
         <SnippetContainer>
           <Header>Newest snibbets</Header>
-          {snippets.map((snippet) => (
-            <Snippet key={snippet.id} id={snippet.id} preview />
-          ))}
-          <Button onClick={() => navigate("/home")}>Show more Snibbets</Button>
+          {snippets &&
+            typeof snippets === typeof [] &&
+            snippets.map((snippet) => (
+              <Snippet key={snippet.id} id={snippet.id} preview />
+            ))}
+          {snippets.length > 0 || typeof snippets !== typeof [] ? (
+            <Button onClick={() => navigate("/home")}>
+              Show more Snibbets
+            </Button>
+          ) : (
+            <p>
+              It seems like the server is currently unavailable. Please try
+              again later.
+            </p>
+          )}
         </SnippetContainer>
       </Grid>
     </PageContainer>

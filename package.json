@@ -1,12 +1,13 @@
 {
   "name": "snibbets",
   "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
-    "start": "yarn && concurrently \"yarn start:client\" \"yarn start:server\"",
-    "dev": "yarn && concurrently \"yarn dev:client\" \"yarn dev:server\"",
-    "start:client": "cd client && yarn && yarn start",
-    "start:server": "yarn build:server && yarn start",
-    "dev:client": "yarn start:client",
+    "start": "yarn && concurrently \"cd client && yarn && yarn build && yarn start\" \"cd server && yarn && yarn build && yarn start\"",
+    "dev": "yarn && concurrently \"cd client && yarn && yarn start\" \"cd server && yarn && yarn dev\"",
+    "start:client": "cd client && yarn && yarn build && yarn start",
+    "start:server": "cd server && yarn && yarn build && yarn start",
+    "dev:client": "cd client && yarn && yarn build && yarn start",
     "dev:server": "cd server && yarn && yarn dev",
     "build:client": "cd client && yarn && yarn build",
     "build:server": "cd server && yarn && yarn build"

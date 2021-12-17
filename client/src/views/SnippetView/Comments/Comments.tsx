@@ -63,7 +63,9 @@ const Comments: React.FC<Props> = ({ snippetId, userId }) => {
   };
 
   const updateComment = (comment: CommentType) => {
-    setComments(comments.map((c) => (c.id === comment.id ? comment : c)));
+    setComments((comments) =>
+      comments.map((c) => (c.id === comment.id ? comment : c))
+    );
   };
 
   return (
@@ -91,14 +93,15 @@ const Comments: React.FC<Props> = ({ snippetId, userId }) => {
       {comments.length === 0 && (
         <p>There are no comments. Be first to comment!</p>
       )}
-      {comments.map((comment) => (
-        <Comment
-          comment={comment}
-          userId={userId}
-          removeComment={removeComment}
-          updateComment={updateComment}
-        />
-      ))}
+      {comments &&
+        comments.map((comment) => (
+          <Comment
+            comment={comment}
+            userId={userId}
+            removeComment={removeComment}
+            updateComment={updateComment}
+          />
+        ))}
     </CommentCard>
   );
 };

@@ -152,7 +152,7 @@ const User: React.FC<Props> = ({ userId }) => {
               <Bio grey>This user has not written a bio yet!</Bio>
             )}
           </Card>
-          {snippets.length > 0 ? (
+          {snippets && snippets.length > 0 ? (
             snippets.map((snippet) => (
               <Snippet
                 key={snippet.id}
