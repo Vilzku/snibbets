@@ -49,9 +49,10 @@ The project is fully built on TypeScript and most of the errors are usually rela
 | User profiles can have images which are show next to posts/comments                                                |      3 |
 | User can click username and see user profile page where name, register date, (user picture) and user bio is listed |      2 |
 | Last edited timestamp is stored and shown with posts/comments                                                      |      2 |
-| **Total**                                                                                                          | **48** |
+| Own feature: UX planning, applicatoin flow and usability                                                           |      2 |
+| **Total**                                                                                                          | **50** |
 
-The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. In regards to points, I think there is room to get points from the UX desing and usability point of view but these are not listed as maximum points should be reached anyway.
+The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. I think there could be many smaller features that could award points but are not listed here.
 
 # Planning
 
