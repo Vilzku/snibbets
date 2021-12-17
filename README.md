@@ -52,7 +52,7 @@ The project is fully built on TypeScript and most of the errors are usually rela
 | Own feature: UX planning, applicatoin flow and usability                                                           |      2 |
 | **Total**                                                                                                          | **50** |
 
-The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. I think there could be many smaller features that could award points but are not listed here.
+The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. I think there are many smaller features, like security aspect, that could award points but are not listed here as they are only partially completed.
 
 # Planning
 
