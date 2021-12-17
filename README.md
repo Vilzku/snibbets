@@ -4,7 +4,7 @@
 
 This application shows snippets uploaded by the users. Created for LUT University course Web Applications. I plan on doing more development on this porject in the future but as for now this is the version that is getting graded.
 
-There are many features that I still would want to implement, and currently the application has many smaller bugs. The most necessary feature would be error handling as for now the user has basically no indication of critical errors coming from server side. Smaller bugs that are easily noticeable are in regards to usability, like menus not showing properly or components flashing or disappering randomly. For the most part serverside of the application is quite fine apart from a library used for securing the api that is currently disabled.
+There are many features that I still would want to implement, and currently the application has many smaller bugs. The most necessary feature would be error handling as for now the user has basically no indication of critical errors coming from server side. Smaller bugs that are easily noticeable are in regards to usability, like menus not showing properly or components flashing or disappering randomly. For the most part serverside of the application is quite fine apart from a library used for securing the api that is currently disabled. Also the code structure is currently somewhat messy as the time constrait really pushed the limits.
 
 For any questions feel free to message me in Discord @ Vilzku#9717, or send email to ville.puolitaival@student.lut.fi
 
