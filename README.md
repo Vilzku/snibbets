@@ -26,11 +26,9 @@ Download the PostgreSQL server from the official website and setup a root accoun
 
 ### Running the application
 
-Everything needed to run the server should be able to be executed with command yarn start. The package manager yarn should be installed globally to run the said script. Remember to create the .env -file! For more details about commands used, see package.json.
-`yarn start`
-`yarn dev`
+Everything needed to run the server should be able to be executed with command `yarn start`. `yarn dev` can be used to track changes without building the project again. The package manager yarn should be installed globally to run the said scripts. Remember to create the .env -file! For more details about commands used, see package.json.
 
-The project is fully built on TypeScript and most of the errors are usually related to typing errors if not all the necessary packages are not installed. Therefore it may sometimes be required to install ja build both client and server separately by hand. Production build was such a nightmare that I am not even going to document it until I get it working.
+The project is fully built on TypeScript and most of the errors are usually related to typing errors if not all the necessary packages are not installed. Therefore it may sometimes be required to install ja build both client and server separately by hand. The frontpage of the applicatoin displays an error message saying that server is down, but it expects to find atleast one snippet to display and therefore that information is irrelevant when running an empty database. Production build was such a nightmare that I am not even going to document it until I get it working.
 
 # Feature list and points
 
