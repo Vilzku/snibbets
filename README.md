@@ -1,3 +1,5 @@
+![Snibbets application](https://i.imgur.com/UtVFgrk.png)
+
 # Introduction
 
 This application shows snippets uploaded by the users. Created for LUT University course Web Applications. I plan on doing more development on this porject in the future but as for now this is the version that is getting graded.
