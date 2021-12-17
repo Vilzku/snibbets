@@ -4,11 +4,35 @@
 
 This application shows snippets uploaded by the users.
 
-Feature list on the bottom of the page.
+Feature list is displayed below.
 
 # Installation and local development
 
+In order to run the application locally node.js and PorstgreSQL need to be installed on the machine.
+I tried to run the application on a container and publish it online, but unfortunately I ran out of time trying to do this. I will try to do this again later if I have the spare time. TypeScript can be somewhat a nightmare sometimes when doing it in a hurry. At somepoint I got a working Docker image without ability to save images, but unfortunately even it run against some errors.
+
+### Environment variables for server
+
+| Key         | Description                                                      | Example                          |
+| ----------- | ---------------------------------------------------------------- | -------------------------------- |
+| DB_NAME     | PostgreSQL database name                                         | snibbets                         |
+| DB_USER     | User that has access rights to PostrgeSQL datbase and its tables | snibbetuser                      |
+| DB_PASSWORD | Password for the said user                                       | G9kn5tGZwRGcdPEs3quurZ66qTFDqe22 |
+| JWT_SECRET  | A string that is used to encrypt JWT                             | RFodExPEdBDYJMCnA6rN8NeLG3yMRV3D |
+
+### Setting up the database
+
+[This file contains the commands needed to create the tables](./server/src/db/setup.sql)
+
+Download the PostgreSQL server from the official website and setup a root account. With that account a new database with relations can be created. After creating the relations create an user and grant privileges to it. The application assumes the database is runnin in default port 5432 in localhost.
+
+### Running the application
+
+Everything needed to run the server should be able to be executed with command yarn start. The package manager yarn should be installed globally to run the said script. Remember to create the .env -file! For more details about commands used, see package.json.
 `yarn start`
+`yarn dev`
+
+The project is fully built on TypeScript and most of the errors are usually related to typing errors if not all the necessary packages are not installed. Therefore it may sometimes be required to install ja build both client and server separately by hand.
 
 # Feature list and points
 
@@ -17,15 +41,15 @@ Feature list on the bottom of the page.
 | Basic features with well written documentation                                                                     |     25 |
 | Users can edit their own comments/posts                                                                            |      4 |
 | Utilization of a frontside framework (React)                                                                       |      5 |
-| Use some highlight library for the code snippets                                                                   |      2 |
 | Use of a pager when there is more than 10 posts available                                                          |      2 |
-| Admin account with rights to edit all the post and comments and delete content                                     |      3 |
 | Provide a search that can filter out only those messages that have the searched keyword                            |      2 |
 | Vote (up or down) posts or comments (only one vote per user)                                                       |      3 |
 | User profiles can have images which are show next to posts/comments                                                |      3 |
 | User can click username and see user profile page where name, register date, (user picture) and user bio is listed |      2 |
 | Last edited timestamp is stored and shown with posts/comments                                                      |      2 |
-| **Total**                                                                                                          | **53** |
+| **Total**                                                                                                          | **48** |
+
+The application is missing many of the features thought about in original planning but due to time constraints some of them are not implemented. In regards to points, I think there is room to get points from the UX desing and usability point of view but it is not listed as maximum points is reached anyway.
 
 # Planning
 
@@ -64,11 +88,13 @@ Technical specifications based on the UI/UX planning
 
 ### Tech stack
 
-**Front-end**: TypeScript, React, React Query, Bootstrap
+**Front-end**: TypeScript, React, React Router, Styled Components
+
+I wanted to learn doing more by hand and therefore styling library was not used.
 
 **Back-end**: TypeScript, Node.js, Express, PostgreSQL
 
-Both front- and back-end will be run in a Docker environment.
+As like with the front-end, the PostgreSQL database was used because I wanted to learn it.
 
 ### Data models
 
@@ -112,22 +138,22 @@ Both front- and back-end will be run in a Docker environment.
 | password  | string   |    x     |
 | username  | string   |    x     |
 | createdAt | datetime |    x     |
-| picture   | buffer   |
 | bio       | string   |
 
 ### API
 
-WIP: Planning on theoretical level, might be modified as the project goes
+A list of all api endpoints. See the routes folder inside server for more details like parameters.
 
 **Snippets**
 
-| Method     | URL                        |
-| ---------- | -------------------------- |
-| **GET**    | /api/snippets (params wip) |
-| **GET**    | /api/snippets/:snippet_id  |
-| **POST**   | /api/snippets              |
-| **PATCH**  | /api/snippets/:snippet_id  |
-| **DELETE** | /api/snippets/:snippet_id  |
+| Method     | URL                         |
+| ---------- | --------------------------- |
+| **GET**    | /api/snippets               |
+| **GET**    | /api/snippets/:snippet_id   |
+| **GET**    | /api/snippets/user/:user_id |
+| **POST**   | /api/snippets               |
+| **PUT**    | /api/snippets/:snippet_id   |
+| **DELETE** | /api/snippets/:snippet_id   |
 
 **Comments**
 
@@ -135,7 +161,7 @@ WIP: Planning on theoretical level, might be modified as the project goes
 | ---------- | ---------------------------------------------- |
 | **GET**    | /api/snippets/:snippet_id/comments             |
 | **POST**   | /api/snippets/:snippet_id/comments             |
-| **PATCH**  | /api/snippets/:snippet_id/comments/:comment_id |
+| **PUT**    | /api/snippets/:snippet_id/comments/:comment_id |
 | **DELETE** | /api/snippets/:snippet_id/comments/:comment_id |
 
 **Votes**
@@ -145,13 +171,17 @@ WIP: Planning on theoretical level, might be modified as the project goes
 | **GET**    | /api/votes/:post_id |
 | **POST**   | /api/votes/         |
 | **DELETE** | /api/votes/:vote_id |
+| **PATCH**  | /api/votes/:vote_id |
 
 **Users**
 
-| Method     | URL                 |
-| ---------- | ------------------- |
-| **GET**    | /api/users/:user_id |
-| **POST**   | /api/users/login    |
-| **POST**   | /api/users/register |
-| **PATCH**  | /api/users/:user_id |
-| **DELETE** | /api/users/:user_id |
+| Method     | URL                       |
+| ---------- | ------------------------- |
+| **GET**    | /api/users/:user_id       |
+| **POST**   | /api/users/login          |
+| **GET**    | /api/users/logout         |
+| **POST**   | /api/users/register       |
+| **PATCH**  | /api/users/               |
+| **DELETE** | /api/users/               |
+| **POST**   | /api/users/image          |
+| **GET**    | /api/users/image/:user_id |

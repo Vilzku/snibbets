@@ -1,17 +1,23 @@
 
+-- Do these AFTER creating the tables:
+-- REMEMBER TO CHANGE USERNAME AND PASSWORD TO MATCH YOUR .ENV
 
--- Do these after creating the tables:
--- CREATE USER snibbetuser WITH ENCRYPTED PASSWORD 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+CREATE USER snibbetuser WITH ENCRYPTED PASSWORD 'G9kn5tGZwRGcdPEs3quurZ66qTFDqe22';
 
--- GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
--- GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
--- GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
--- GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
--- GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
+-- Switch to right database before running grants
+\c snibbets
 
+GRANT ALL PRIVILEGES ON DATABASE snibbets TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE users TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE snippets TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE comments TO snibbetuser;
+GRANT ALL PRIVILEGES ON TABLE votes TO snibbetuser;
 
--- DROP DATABASE [IF EXISTS] snibbets;
--- CREATE DATABASE snibbets;
+-------------------------------------------------
+-------------------------------------------------
+
+DROP DATABASE [IF EXISTS] snibbets;
+CREATE DATABASE snibbets;
 
 CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) NOT NULL,
