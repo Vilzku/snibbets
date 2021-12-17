@@ -6,7 +6,7 @@ Feature list is displayed below.
 
 # Installation and local development
 
-In order to run the application locally node.js and PorstgreSQL need to be installed on the machine.
+In order to run the application locally node.js and PorstgreSQL (and TypeScript) need to be installed on the machine.
 I tried to run the application on a container and publish it online, but unfortunately I ran out of time trying to do this. I will try to do this again later if I have the spare time. TypeScript can be somewhat a nightmare sometimes when doing it in a hurry. At somepoint I got a working Docker image without ability to save images, but unfortunately even it run against some errors.
 
 ### Environment variables for server
@@ -22,7 +22,7 @@ I tried to run the application on a container and publish it online, but unfortu
 
 [This file contains the commands needed to create the tables](./server/src/db/setup.sql)
 
-Download the PostgreSQL server from the official website and setup a root account. With that account a new database with relations can be created. After creating the relations create an user and grant privileges to it. The application assumes the database is runnin in default port 5432 in localhost.
+Download the PostgreSQL server from the official website and setup a root account. With that account a new database with relations can be created. After creating the relations create an user and grant privileges to it. The application assumes the database is running in default port 5432 in localhost.
 
 ### Running the application
 
@@ -59,14 +59,14 @@ Documentation about planning phase which led to the techology choices.
 
 Application flow diagram shows basic user path in the application. The arrows indicate where the user can navigate to on the application. Plans for needed UI elements and API planning can be done based on the diagram.
 
-At first, users will land on landing page which will prompt the user to register and login or either suggest them to browse suggestions with limited functionality. After the user has logged in more action become available. Creating a new snippet, viewing a snippet and editing a snippet are done in a similiar (modal) page. Basic actions like editing or voting can be done either directly on the list view or on a single snippet page. Search functionality alters the snippets shown on the main page. Profile pages are available for everyone to see when opened from a link in post, but editing is only possible for own profile. Logout can either happen manually or by timed logout.
+At first, users will land on landing page which will prompt the user to register and login or either suggest them to browse suggestions with limited functionality. After the user has logged in more actions become available. Creating a new snippet, viewing a snippet and editing a snippet are done in a similiar (modal) page. Basic actions like editing or voting can be done either directly on the list view or on a single snippet page. Search functionality alters the snippets shown on the main page. Profile pages are available for everyone to see when opened from a link in post, but editing is only possible for own profile. Logout can either happen manually or by timed logout (not implemented).
 
 ## UI planning
 
 Needed screens
 
 - Landing page
-  - "Popular" snippets
+  - "Popular" snippets (Popularity not impelented, showing latest 3 instead)
   - Login
   - Register
 - Main page
@@ -74,9 +74,9 @@ Needed screens
   - Search
   - Navbar
 - Profile page
+  - Information and posts
   - Edit mode
-  - Navbar
-- Goodbye screen
+- Goodbye screen (Not implemented as not priority)
 
 On top of that a modal view is needed for inspecting or editing a snippet.
 
@@ -86,13 +86,11 @@ Technical specifications based on the UI/UX planning
 
 ### Tech stack
 
+PERN-stack
+
 **Front-end**: TypeScript, React, React Router, Styled Components
 
-I wanted to learn doing more by hand and therefore styling library was not used.
-
-**Back-end**: TypeScript, Node.js, Express, PostgreSQL
-
-As like with the front-end, the PostgreSQL database was used because I wanted to learn it.
+**Back-end**: TypeScript, Node.js, Express, PostgreSQL, JWT
 
 ### Data models
 
