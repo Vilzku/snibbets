@@ -8,6 +8,10 @@ const Page = styled.div`
   padding-top: 3.5rem;
   padding-bottom: 5rem;
   z-index: 0;
+
+  @media (max-width: 1024px) {
+    width: 100vw;
+  }
 `;
 
 export default Page;

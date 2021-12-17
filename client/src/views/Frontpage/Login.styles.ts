@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Grid = styled.div`
@@ -11,6 +10,12 @@ export const Grid = styled.div`
   padding: 1rem;
   gap: 1rem;
   padding-top: 5rem;
+
+  @media (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 2rem;
+  }
 `;
 
 export const SnippetContainer = styled.div`
@@ -19,10 +24,18 @@ export const SnippetContainer = styled.div`
   padding: 1rem 4rem;
   gap: 1rem;
   grid-column: 1 / span 2;
+
+  @media (max-width: 1024px) {
+    padding: 1rem;
+  }
 `;
 
 export const Logo = styled.img`
   max-width: 25rem;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 export const InfoContainer = styled.div`

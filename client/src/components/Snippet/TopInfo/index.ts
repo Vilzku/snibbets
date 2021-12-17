@@ -1,6 +1,4 @@
 import TopInfo from "./TopInfo";
-import Container from "./TopInfo.styles";
-
 export default TopInfo;
 
-export { Container };
+export { Container, ProfileLink } from "./TopInfo.styles";

@@ -43,7 +43,7 @@ router.post(
     }
 
     try {
-      const hash = bcrypt.hash(password, 10);
+      const hash = await bcrypt.hash(password, 10);
       const result = await pool.query(
         "INSERT INTO users (id, email, password, username) VALUES ($1, $2, $3, $4) RETURNING *",
         [uuidv4(), email, hash, username.toLowerCase()]
@@ -87,6 +87,14 @@ router.post("/login", async (req: Request, res: Response) => {
     console.error(err);
     return res.sendStatus(500);
   }
+});
+
+/**
+ * @api {get} /api/users/logout Logout user
+ */
+router.get("/logout", async (req: Request, res: Response) => {
+  res.clearCookie("auth_token");
+  return res.sendStatus(200);
 });
 
 /**
@@ -187,6 +195,9 @@ router.post(
   }
 );
 
+/**
+ * @api {get} /api/users/image/:id Fetch a profile picture
+ */
 router.get("/image/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const path = `./data/images/${id}`;
@@ -199,4 +210,5 @@ router.get("/image/:id", async (req: Request, res: Response) => {
     return res.sendStatus(500);
   }
 });
+
 export default router;

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import { CommentCard, Comment, NewCommentContainer } from ".";
 import { Avatar, Divider, SubmitIcon, TextInput } from "../../../components";
 import { getComments, postComment } from "../../../utils/api/comments";
+import { getImage } from "../../../utils/api/users";
 import { CommentType } from "../../../utils/types";
+import avatarPlaceholder from "../../../assets/images/avatar-placeholder.webp";
 
 interface Props {
   snippetId: string;
@@ -30,8 +32,17 @@ const Comments: React.FC<Props> = ({ snippetId, userId }) => {
   }, [snippetId]);
 
   useEffect(() => {
-    //TODO: image does not always load
-    userId && setAvatarUrl(`/api/users/image/${userId}`);
+    if (userId) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(userId);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [userId]);
 
   const handleSubmit = async () => {

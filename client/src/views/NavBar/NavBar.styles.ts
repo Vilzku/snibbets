@@ -16,6 +16,7 @@ export const Bar = styled.div`
 
 interface ColumnProps {
   flex?: boolean;
+  hideOnSmall?: boolean;
 }
 
 export const Column = styled.div<ColumnProps>`
@@ -27,6 +28,10 @@ export const Column = styled.div<ColumnProps>`
   gap: 0.5rem;
   padding: 0 0.5rem;
   flex: ${({ flex }) => (flex ? "1" : "0")};
+
+  @media (max-width: 666px) {
+    display: ${({ hideOnSmall }) => (hideOnSmall ? "none" : "flex")};
+  }
 `;
 
 export const Container = styled.div`
@@ -39,6 +44,11 @@ export const Container = styled.div`
   margin: auto;
   max-width: 1200px;
   width: 80%;
+
+  @media (max-width: 1024px) {
+    width: calc(100% - 4rem);
+    padding: 0 2rem;
+  }
 `;
 
 export const Logo = styled.img`

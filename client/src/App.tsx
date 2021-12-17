@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Page } from "./components";
+import { logoutUser } from "./utils/api/users";
 import {
   getUserFromStorage,
   isLoginExpired,
@@ -18,6 +19,7 @@ const App: React.FC = () => {
     username: string;
     id: string;
   } | null>(getUserFromStorage());
+  const navigate = useNavigate();
 
   // Check if user login has expired
   const { pathname } = useLocation();
@@ -30,9 +32,12 @@ const App: React.FC = () => {
     setUser(user);
   };
 
-  const handleLogout = () => {
-    removeUserFromStorage();
-    setUser(null);
+  const handleLogout = async () => {
+    if (await logoutUser()) {
+      removeUserFromStorage();
+      setUser(null);
+      navigate("/");
+    }
   };
 
   return (

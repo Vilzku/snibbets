@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { Avatar, Modal } from ".";
 import { Button, Card, Header, TextInput, ToprightIcon } from ".";
 import { postSnippet } from "../utils/api/snippets";
+import { getImage } from "../utils/api/users";
 import { SnippetType } from "../utils/types";
 import { CodeBlock } from "./Snippet";
+import avatarPlaceholder from "../assets/images/avatar-placeholder.webp";
 
 interface Props {
   addNewSnippet: (newSnippet: SnippetType) => void;
@@ -39,8 +41,17 @@ const NewSnippet: React.FC<Props> = ({ addNewSnippet, userId }) => {
   };
 
   useEffect(() => {
-    //TODO: image does not always load
-    if (userId) setAvatarUrl(`/api/users/image/${userId}`);
+    if (userId) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(userId);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [userId]);
 
   return (

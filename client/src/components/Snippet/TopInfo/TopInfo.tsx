@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Header, SubHeader } from "../..";
-import avatarPlaceholder from "../../../assets/images/avatar-placeholder.png";
-import { getUserInfo } from "../../../utils/api/users";
+import avatarPlaceholder from "../../../assets/images/avatar-placeholder.webp";
+import { getImage, getUserInfo } from "../../../utils/api/users";
 import { UserType } from "../../../utils/types";
-import { Container } from ".";
+import { Container, ProfileLink } from ".";
 import { getCreatedAtString } from "../../../utils/dateHelper";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   title: string;
@@ -23,8 +24,9 @@ const TopInfo: React.FC<Props> = ({
   titleClickable,
   onClick,
 }) => {
-  const [user, setUser] = React.useState<UserType>({} as UserType);
-  const [avatarUrl, setAvatarUrl] = React.useState<string>();
+  const [user, setUser] = useState<UserType>({} as UserType);
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -35,13 +37,26 @@ const TopInfo: React.FC<Props> = ({
   }, [userId]);
 
   useEffect(() => {
-    //TODO: image does not always load
-    user && setAvatarUrl(`/api/users/image/${user.id}`);
+    if (user.id) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(user.id);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [user]);
 
   return (
     <Container>
-      <Avatar src={avatarUrl || avatarPlaceholder} size="3rem" />
+      <Avatar
+        src={avatarUrl}
+        size="3rem"
+        onClick={() => navigate("/user/" + user.id)}
+      />
       <div>
         <Header
           onClick={onClick ? onClick : () => null}
@@ -50,9 +65,10 @@ const TopInfo: React.FC<Props> = ({
           {title}
         </Header>
         <SubHeader>
-          {/* TODO: Link to profile */}
-          {user.username +
-            (createdAt ? " - " + getCreatedAtString(createdAt as string) : "") +
+          <ProfileLink onClick={() => navigate("/user/" + user.id)}>
+            {user.username}
+          </ProfileLink>
+          {(createdAt ? " - " + getCreatedAtString(createdAt as string) : "") +
             (updatedAt
               ? " - updated " + getCreatedAtString(updatedAt as string)
               : "")}

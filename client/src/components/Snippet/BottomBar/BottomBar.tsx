@@ -45,6 +45,7 @@ const BottomBar: React.FC<Props> = ({ snippetId, userId }) => {
    * on the state if the user has already voted
    */
   const handleVote = async (type: "positive" | "negative") => {
+    if (!userId) return;
     const positive = type === "positive";
 
     try {

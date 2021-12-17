@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Avatar, Button, Link } from "../../../components";
+import React, { useRef, useState } from "react";
+import { Avatar, Button } from "../../../components";
 import { uploadImage } from "../../../utils/api/users";
-import avatarPlaceholder from "../../../assets/images/avatar-placeholder.png";
+import avatarPlaceholder from "../../../assets/images/avatar-placeholder.webp";
 import { useNavigate } from "react-router-dom";
 import { SubText } from "../../../components/TextInput";
 

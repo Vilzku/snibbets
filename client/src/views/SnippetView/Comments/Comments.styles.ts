@@ -1,6 +1,5 @@
-import { darken } from "polished";
 import styled from "styled-components";
-import { Card, Icon } from "../../../components";
+import { Card } from "../../../components";
 
 export const CommentCard = styled(Card)`
   margin-top: -1rem;

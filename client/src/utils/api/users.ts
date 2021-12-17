@@ -108,7 +108,7 @@ export const getImage = async (id: string) => {
   try {
     const res = await axios.get(`/api/users/image/${id}`);
     if (res.status === 200) {
-      return res.data;
+      return res.config.url;
     } else if (res.status === 404) {
       return null;
     }
@@ -136,6 +136,22 @@ export const patchUser = async (
     if (res.status === 200) {
       if (res.data.username) updateUserToStorage(res.data.username);
       return res.data;
+    }
+    throw new Error();
+  } catch (err: any) {
+    if (err.response && err.response.status === 500) {
+      throw new Error("Server error, try again later");
+    } else {
+      throw new Error("Something went wrong, reload the page and try again");
+    }
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const res = await axios.get("/api/users/logout");
+    if (res.status === 200) {
+      return true;
     }
     throw new Error();
   } catch (err: any) {

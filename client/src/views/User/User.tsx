@@ -1,10 +1,6 @@
-import {
-  faEdit,
-  faEllipsisH,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Bio, Container, EditUserModal, HeaderContainer } from ".";
 import {
   Avatar,
@@ -19,9 +15,10 @@ import {
   ToprightIcon,
 } from "../../components";
 import { getUserSnippets } from "../../utils/api/snippets";
-import { getUserInfo } from "../../utils/api/users";
+import { getImage, getUserInfo } from "../../utils/api/users";
 import { getCreatedAtString } from "../../utils/dateHelper";
 import { SnippetType, UserType } from "../../utils/types";
+import avatarPlaceholder from "../../assets/images/avatar-placeholder.webp";
 
 interface Props {
   userId: string | undefined;
@@ -53,8 +50,17 @@ const User: React.FC<Props> = ({ userId }) => {
   }, [id]);
 
   useEffect(() => {
-    //TODO: image does not always load
-    user && setAvatarUrl(`/api/users/image/${user.id}`);
+    if (user?.id) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(user.id);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [user]);
 
   // Load snippets for user

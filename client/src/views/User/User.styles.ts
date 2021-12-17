@@ -13,6 +13,17 @@ export const HeaderContainer = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 2rem;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem !important;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 interface BioProps {
@@ -23,4 +34,8 @@ export const Bio = styled.p<BioProps>`
   padding: 0 3rem;
   color: ${({ grey, theme }) =>
     grey ? theme.colors.grey : theme.colors.black};
+
+  @media (max-width: 600px) {
+    padding: 1rem !important;
+  }
 `;

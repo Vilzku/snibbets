@@ -25,6 +25,13 @@ const Button = styled.button<Props>`
     background: ${({ theme }) => theme.colors.lightGrey};
     color: ${({ theme }) => theme.colors.black};
   }
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0.2rem;
+  }
 `;
 
 export default Button;

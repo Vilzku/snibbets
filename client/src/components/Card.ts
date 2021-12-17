@@ -1,4 +1,4 @@
-import { darken, rgba } from "polished";
+import { darken } from "polished";
 import styled from "styled-components";
 
 interface Props {

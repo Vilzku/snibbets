@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   margin-top: -0.5rem;
   margin-bottom: 0.75rem;
@@ -10,4 +10,10 @@ const Container = styled.div`
   padding-right: 3rem;
 `;
 
-export default Container;
+export const ProfileLink = styled.span`
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;

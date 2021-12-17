@@ -8,7 +8,7 @@ import {
   TextInput,
   ToprightIcon,
 } from "../../components";
-import avatarPlaceholder from "../../assets/images/avatar-placeholder.png";
+import avatarPlaceholder from "../../assets/images/avatar-placeholder.webp";
 import { patchUser, uploadImage } from "../../utils/api/users";
 import { SubText } from "../../components/TextInput";
 import { ImageUploadContainer } from ".";

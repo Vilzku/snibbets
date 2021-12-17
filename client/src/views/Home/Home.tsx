@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { List } from ".";
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   NewSnippet,
   PageContainer,
   Snippet,
+  SubHeader,
 } from "../../components";
 import { getAllSnippets } from "../../utils/api/snippets";
 import { SnippetType } from "../../utils/types";
@@ -15,13 +16,13 @@ interface Props {
   userId: string | undefined;
 }
 
-const PAGE_AMOUNT = 5;
+const PAGE_AMOUNT = 10;
 
 const Home: React.FC<Props> = ({ userId }) => {
   const [snippets, setSnippets] = useState<SnippetType[]>([]);
   const [showMoreButton, setShowMoreButton] = useState(true);
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
 
   useEffect(() => {
@@ -88,6 +89,12 @@ const Home: React.FC<Props> = ({ userId }) => {
               removeSnippet={removeSnippet}
             />
           ))}
+        {snippets.length === 0 && (
+          <SubHeader>
+            It is quite empty here! Try different search parameters or try again
+            later if the service is down.
+          </SubHeader>
+        )}
         {showMoreButton && <Button onClick={loadMore}>Show more</Button>}
       </List>
     </PageContainer>

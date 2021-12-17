@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Bar, Column, Container, Logo, ProfileName } from ".";
 import logo from "../../assets/images/logo.png";
-import avatarPlaceholder from "../../assets/images/avatar-placeholder.png";
+import avatarPlaceholder from "../../assets/images/avatar-placeholder.webp";
 import {
   Avatar,
+  Button,
   Icon,
   Menu,
   MenuDivider,
@@ -18,6 +19,7 @@ import {
   faSignOutAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { getImage } from "../../utils/api/users";
 
 interface Props {
   user: { username: string; id: string } | null;
@@ -42,8 +44,17 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
   };
 
   useEffect(() => {
-    //TODO: image does not always load
-    user && setAvatarUrl(`/api/users/image/${user.id}`);
+    if (user?.id) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(user.id);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [user]);
 
   const handleSearch = () => {
@@ -54,9 +65,9 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
     <Bar>
       <Container>
         <Column>
-          <Logo src={logo} alt="logo" onClick={() => navigate("/")} />
+          <Logo src={logo} alt="logo" onClick={() => navigate("/home")} />
         </Column>
-        <Column flex>
+        <Column flex hideOnSmall>
           <TextInput
             type="search"
             placeholder="Search"
@@ -75,9 +86,11 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
           />
           <SubmitIcon icon={faSearch} onClick={handleSearch} />
         </Column>
-        {user && (
+        {user ? (
           <Column>
-            <ProfileName to={"/user/" + user.id}>{user.username}</ProfileName>
+            {user.username.length <= 10 && (
+              <ProfileName to={"/user/" + user.id}>{user.username}</ProfileName>
+            )}
             <Avatar
               src={avatarUrl}
               alt="avatar"
@@ -107,6 +120,16 @@ const NavBar: React.FC<Props> = ({ user, handleLogout }) => {
               </Menu>
             )}
           </Column>
+        ) : (
+          pathname !== "/" && (
+            <Button
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              Login
+            </Button>
+          )
         )}
       </Container>
     </Bar>

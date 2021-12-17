@@ -3,7 +3,6 @@ import {
   faPeopleArrows,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
-import { toColorString } from "polished";
 import React from "react";
 import { Container, TextGrid } from ".";
 import { Header, Icon, SubHeader } from "../../../components";

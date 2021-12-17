@@ -24,8 +24,9 @@ import {
   TextInput,
 } from "../../../../components";
 import { editComment } from "../../../../utils/api/comments";
-import { getUserInfo } from "../../../../utils/api/users";
+import { getImage, getUserInfo } from "../../../../utils/api/users";
 import { CommentType, UserType } from "../../../../utils/types";
+import avatarPlaceholder from "../../../../assets/images/avatar-placeholder.webp";
 
 interface Props {
   comment: CommentType;
@@ -58,8 +59,17 @@ const Comment: React.FC<Props> = ({
   }, [comment.userId]);
 
   useEffect(() => {
-    //TODO: image does not always load
-    user && setAvatarUrl(`/api/users/image/${user.id}`);
+    if (user.id) {
+      const getAvatar = async () => {
+        try {
+          const url = await getImage(user.id);
+          if (url) setAvatarUrl(url);
+        } catch (error) {
+          setAvatarUrl(avatarPlaceholder);
+        }
+      };
+      getAvatar();
+    }
   }, [user]);
 
   const handleSubmit = async () => {
